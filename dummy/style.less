@@ -1,0 +1,92 @@
+@import "custom/scheme.less"; // color scheme
+@import "bootstrap/less/bootstrap.less"; // bootstrap
+@import "custom/1pxdeep.less"; // 1pxdeep theme
+
+.dropdown-menu {
+    background: @color2;
+}
+.dropdown-menu li a {
+    .contrast(@color2);
+}
+
+h3.panel-title {
+    .contrast(@color2);
+}
+
+.nav .caret {
+    border-top-color: white;
+    border-bottom-color: white;
+}
+
+.nav a:hover .caret, .nav .open .caret {
+    border-top-color: #55663a;
+    border-bottom-color: #55663a;
+}
+
+.breadcrumb > li + li:before {
+    .contrast(@color3);
+}
+
+.disabled .thumbnail {
+    opacity: 0.3;
+}
+
+.thumbnail img {
+    width: 320px;
+    height: 180px;
+}
+
+.thumbwrap {
+    width: 260px;
+    display: inline-block;
+    margin: 3px 5px;
+    position: relative;
+}
+
+.menu {
+    margin: auto;
+    margin-top: 65px;
+    padding: 5px;
+}
+
+.breadcrumb {
+    margin-bottom: 5px;
+}
+
+.vcenter {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 300px;
+    height: 200px;
+}
+
+.color2bord {
+    border: 1px solid lighten(#416946, 25%);
+}
+
+
+.form-signin .form-group input {
+    margin: 5px auto;
+}
+
+.balign {
+    position: relative;
+    top: 0px;
+}
+
+.ttitle {
+    position: absolute;
+    bottom: 40px;
+    width: 260px;
+    opacity: 0.9;
+    background: @color1b;
+}
+
+
+.padding10 {
+    padding: 10px;
+}
