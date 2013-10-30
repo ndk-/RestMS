@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="navbar navbar-nav navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand"><i class="icon-food"></i></span>
+        </div>
+	<p class="navbar-text pull-right">Signed in as <a href="#/login" class="navbar-link">Manager</a></p>
+	<div class="collapse navbar-collapse">
+	  <ul class="nav navbar-nav">
+	    <li class="active"><a href="#/manager">Menu</a></li>
+	    <li><a href="#/manager/coupons">Coupons</a></li>
+	    <li><a href="#/manager/game">Game</a></li>
+	    <li><a href="#/manager/passwords">Passwords</a></li>
+	    <li><a href="#/manager/stats">Statistics</a></li>
+	    <li><a href="#/manager/im">Messages</a></li>
+	  </ul>
+	</div>
+      </div>
+    </div>
+    <div class="menu panel color2 color2bord">
+	<ol class="breadcrumb color3">
+	    Categories:
+	    <li ng-repeat="c in menucategory"><a href="#/category/{{c.id}}">{{c.name}}</a></li>
+	</ol>
+	<div class="text-center">
+	    <div class="thumbwrap" ng-repeat="i in menuitem">
+	       <a href="#/menu/edit({{i.id}})" class="thumbnail">
+		    <img src="{{i.picture}}" alt="image"></a>
+		<div class="ttitle">
+		{{i.name}}</div>
+		<div class="btn-group">
+		    <button type="button" class="btn btn-primary">Modify</button>
+		    <button type="button" class="btn btn-primary">Disable</button>
+		    <button type="button" class="btn btn-primary">Remove</button>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
