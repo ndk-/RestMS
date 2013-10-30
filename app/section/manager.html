@@ -20,7 +20,7 @@
     <div class="menu panel color2 color2bord">
 	<ol class="breadcrumb color3">
 	    Categories:
-	    <li ng-repeat="c in menucategory" ng-class="{active : $first}"><a href="#/category/{{c.id}}">{{c.name}}</a></li>
+	    <li ng-repeat="c in menucategory" ng-class="{{active : $first}}"><a href="#/category/{{c.id}}">{{c.name}}</a></li>
 	</ol>
 	<div class="text-center">
 	    <div class="thumbwrap" ng-repeat="i in menuitem">
