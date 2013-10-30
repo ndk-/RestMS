@@ -13,7 +13,7 @@ angular.module('myApp.controllers', [])
 		    'password' : CryptoJS.SHA256($scope.password)
 				    .toString(CryptoJS.enc.Hex)
 		};
-		$http.post('login.php', credentials)
+		$http.post('/login.php', credentials)
 		    .success(function(data, status, header, config) {
 			$scope.error = "";
 			$scope.access = data.access;
@@ -42,17 +42,19 @@ angular.module('myApp.controllers', [])
 	$window.document.title = 'Manager Section';
 	$http.get('db.php/menucategory')
 	    .success(function(data, status, header, config) {
-		console.log(data);
 		$scope.menucategory = data;
-	    })
-	    .error(function(data, status, header, config) {
-		console.log(data);
-		$scope.error = data;
-	    });
-	$http.get('db.php/menuitem/'+$scope.menucategory[0].id)
-	    .success(function(data, status, header, config) {
-		console.log(data);
-		$scope.menuitem = data;
+		$scope.menuitem = new Object;
+		console.log($scope.menucategory);
+		for (var key in $scope.menucategory) {
+		    $http.get('db.php/menuitem/mc_id/'+$scope.menucategory[key].id)
+			.success(function(data, status, header, config) {
+			    $scope.menuitem[key] = data;
+			})
+			.error(function(data, status, header, config) {
+			    console.log(data);
+			    $scope.error = data;
+			})
+		}
 	    })
 	    .error(function(data, status, header, config) {
 		console.log(data);

@@ -20,31 +20,8 @@
     <div class="menu panel color2 color2bord">
 	<ol class="breadcrumb color3">
 	    Categories:
-	    <li ng-repeat="c in menucategory" ng-class="{active : $first}"><a href="#/category/{{c.id}}">{{c.name}}</a></li>
+	    <li ng-repeat="c in menucategory"><a ng-click="item-template='#/manager/$index'" >{{c.name}}</a></li>
 	</ol>
-	<div class="text-center">
-	    <div class="thumbwrap" ng-repeat="i in menuitem">
-	       <a href="#/menu/edit({{i.id}})" class="thumbnail">
-		    <img src="{{i.picture}}" alt="image"></a>
-		<div class="ttitle">
-		{{i.name}}</div>
-		<div class="btn-group">
-		    <button type="button" class="btn btn-primary">Modify</button>
-		    <button type="button" class="btn btn-primary">Disable</button>
-		    <button type="button" class="btn btn-primary">Remove</button>
-		</div>
-	    </div>
-	    <div class="thumbwrap">
-	       <a href="#/menu/add({{c.id}}))" class="thumbnail">
-		    <img src="img/a.png" alt="image"></a>
-		<div class="ttitle">
-		Add New Menu Item</div>
-		<div class="btn-group">
-		    <button type="button" class="btn btn-primary" disabled="disabled">Modify</button>
-		    <button type="button" class="btn btn-primary" disabled="disabled">Disable</button>
-		    <button type="button" class="btn btn-primary" disabled="disabled">Remove</button>
-		</div>
-	    </div>
-	</div>
+	<div ng-include="item-template"></div>
     </div>
 </div>
