@@ -49,7 +49,7 @@ angular.module('myApp.controllers', [])
 		console.log(data);
 		$scope.error = data;
 	    });
-	$http.get('db.php/menuitem')
+	$http.get('db.php/menuitem/'+menucategory[0].id)
 	    .success(function(data, status, header, config) {
 		console.log(data);
 		$scope.menuitem = data;
