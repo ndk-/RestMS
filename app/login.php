@@ -33,8 +33,9 @@
 // Otherwise, allow access
 	else {
 	    session_start();
-	    $_SESSION[credentials]=$result;
-	    echo json_encode(array('success' => 'Login successful'));
+	    $_SESSION[credentials]=$result[0];
+	    echo json_encode(array('success' => 'Login successful',
+				   'access' => $result[0]['a_lvl']));
 	}
     }
     else {

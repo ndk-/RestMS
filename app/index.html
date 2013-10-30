@@ -2,32 +2,20 @@
 <html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
-  <title>RestMS v0.1</title>
+  <title>RestMS v.01</title>
   <link rel="stylesheet/css" href="css/app.css" />
   <link rel="stylesheet/less" href="less/style.less" />
   <script src="js/less/less-1.4.2.min.js"></script>
 </head>
-<div class="container">
-    <form class="form-signin" name="LoginForm" ng-controller="LoginCtrl" ng-submit="Submit()">
-      <div class="panel vcenter padding10 color2 color2bord">
-        <div class="panel-heading color3">
-            <h3 class="panel-title">Please sign-up: <div class="label label-danger">{{error}}</div></h3>
-        </div>
-        <div class="form-group">
-	    <input type="text" class="form-control" name="username" placeholder="username" ng-model="username" required />
-	    <input type="password" class="form-control" placeholder="password" ng-model="password" required />
-	    <button type="submit" class="btn btn-lg btn-block btn-primary">submit</button>
-        </div>
-     </div>
-    </form>
-</div>
-  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular/angular-route.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/directives.js"></script>
+<body>
+    <div ng-view></div>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
 </body>
 </html>

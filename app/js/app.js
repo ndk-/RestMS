@@ -11,10 +11,9 @@ angular.module('myApp', [
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', 
-			{ templateUrl: 'index.html',
-			    controller: 'LoginC' } );
-  $routeProvider.when('/view2',
-			{ templateUrl: 'partials/partial2.html',
-			    controller: 'MyCtrl2' } );
-  $routeProvider.otherwise( {redirectTo: '/view1' } );
+    { templateUrl: 'section/login.html',
+      controller: 'LoginCtrl' } );
+  $routeProvider.when('/manager',
+    { templateUrl: 'section/manager.html', controller: 'ManagerCtrl' } );
+      $routeProvider.otherwise( { redirectTo: '/login' } );
 }]);

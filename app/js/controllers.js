@@ -3,7 +3,8 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-  controller('LoginCtrl', ['$scope', '$http', function($scope, $http) {
+  controller('LoginCtrl', ['$scope', '$http', '$location', '$route', '$window', function($scope, $http, $location, $route, $window) {
+    $window.document.title = 'Login';
     $scope.Submit = function () {
 	var credentials = {
 	    'username' : $scope.username,
@@ -13,12 +14,29 @@ angular.module('myApp.controllers', []).
 	    .success(function(data, status, header, config) {
 		$scope.error = "";
 		console.log(data);
+		$scope.access = data.access;
+		switch($scope.access) {
+			case '0':
+				$location.path('/manager');
+				break;
+			case '1':
+				$location.path('/kitchen');
+				break;
+			case '2':
+				$location.path('/waiter');
+				break;
+			case '3':
+				$location.path('/table');
+				break;
+			default:
+				$location.path('/login');
+		}
 	    })
 	    .error(function(data, status, header, config) {
 		$scope.error = data.error;
 	    });
     }
   }])
-  .controller('MyCtrl2', [function() {
+  .controller('ManagerCtrl', ['$scope', '$http', '$location', '$route', '$window', function($scope, $http, $location, $route, $window) {
 
   }]);
