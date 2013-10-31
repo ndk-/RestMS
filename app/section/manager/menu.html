@@ -1,0 +1,31 @@
+    <div class="menu panel color2 color2bord" ng-controller="mMenuCtrl">
+	<ol class="breadcrumb color3">
+	    Categories:
+	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="">{{c.name}}</a></li>
+<!--	ng-click="item-template=manager/menucategory/{{$index}}"  -->
+	</ol>
+	<div class="text-center">
+	    <div class="thumbwrap" ng-repeat="i in menuitem | filter: (i.mc_id == mc.id)">
+		<a ng-href="#/menu/edit({{i.id}})" class="thumbnail">
+		    <img src="{{i.picture}}" alt="image"></a>
+		<div class="ttitle">
+		    {{i.name}}</div>
+		<div class="btn-group">
+		    <button type="button" class="btn btn-primary">Modify</button>
+		    <button type="button" class="btn btn-primary">Disable</button>
+		    <button type="button" class="btn btn-primary">Remove</button>
+		</div>
+	    </div>
+	    <div class="thumbwrap">
+		<a ng-href="#/menu/add({{c.id}}))" class="thumbnail">
+			<img src="img/a.png" alt="image"></a>
+		<div class="ttitle">
+		    Add New Menu Item</div>
+		<div class="btn-group">
+		    <button type="button" class="btn btn-primary" disabled="disabled">Modify</button>
+		    <button type="button" class="btn btn-primary" disabled="disabled">Disable</button>
+		    <button type="button" class="btn btn-primary" disabled="disabled">Remove</button>
+		</div>
+	    </div>
+	</div>
+    </div>
