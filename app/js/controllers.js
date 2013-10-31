@@ -48,24 +48,11 @@ angular.module('myApp.controllers', [])
 		'MenuCategory', 'MenuItem', function ($scope, $location,
 		$route, $window, MenuCategory, MenuItem) {
 	$scope.mc = new Object();
-	$scope.menucategory = MenuCategory.query(function () {
-	    $scope.mc.id = $scope.menucategory[0].id;
-	});
 	$scope.mc.idx = 0;
+	$scope.menucategory = MenuCategory.query(function () {
+	    $scope.$watch('mc.idx', function() {
+		$scope.mc.id = parseInt($scope.menucategory[$scope.mc.idx].id);
+	    });
+	});
 	$scope.menuitem = MenuItem.query();
-//	console.log(mc_idx);
-/*	while ($scope.menucategory == null) {
-	    console.log($scope.menucategory);
-	    console.log($scope.mc_id);
-	} 
-	if ($routeParams.idx != null)
-	    $scope.mc_idx = parseInt($routeParams.idx);
-	$http.get('db.php/menuitem/mc_id/'+$scope.menucategory[$scope.mc_idx].id)
-	    .success(function(data, status, header, config) {
-		$scope.menuitem = data;
-	    })
-	    .error(function(data, status, header, config) {
-	        console.log(data);
-	        $scope.error = data;
-	    })*/
 }]);

@@ -1,11 +1,11 @@
     <div class="menu panel color2 color2bord" ng-controller="mMenuCtrl">
 	<ol class="breadcrumb color3">
 	    Categories:
-	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="">{{c.name}}</a></li>
+	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="mc.idx=$index">{{c.name}}</a></li>
 <!--	ng-click="item-template=manager/menucategory/{{$index}}"  -->
 	</ol>
 	<div class="text-center">
-	    <div class="thumbwrap" ng-repeat="i in menuitem | filter: (i.mc_id == mc.id)">
+	    <div class="thumbwrap" ng-repeat="i in menuitem | itemsCategory:mc.id">
 		<a ng-href="#/menu/edit({{i.id}})" class="thumbnail">
 		    <img src="{{i.picture}}" alt="image"></a>
 		<div class="ttitle">
