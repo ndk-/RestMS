@@ -1,27 +1,21 @@
 <div class="container">
     <div class="navbar navbar-nav navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <span class="navbar-brand"><i class="icon-food"></i></span>
-        </div>
-	<p class="navbar-text pull-right">Signed in as <a href="#/login" class="navbar-link">Manager</a></p>
-	<div class="collapse navbar-collapse">
-	  <ul class="nav navbar-nav">
-	    <li class="active"><a href="#/manager">Menu</a></li>
-	    <li><a href="#/manager/coupons">Coupons</a></li>
-	    <li><a href="#/manager/game">Game</a></li>
-	    <li><a href="#/manager/passwords">Passwords</a></li>
-	    <li><a href="#/manager/stats">Statistics</a></li>
-	    <li><a href="#/manager/im">Messages</a></li>
-	  </ul>
+	<div class="container">
+	    <div class="navbar-header">
+		<span class="navbar-brand"><i class="icon-food"></i></span>
+	    </div>
+	    <p class="navbar-text pull-right">Signed in as <a href="#/login" class="navbar-link">Manager</a></p>
+	    <div class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+		    <li class="active"><a ng-href="#/manager/menu">Menu</a></li>
+		    <li><a ng-href="#/manager/coupons">Coupons</a></li>
+		    <li><a ng-href="#/manager/game">Game</a></li>
+		    <li><a ng-href="#/manager/passwords">Passwords</a></li>
+		    <li><a ng-href="#/manager/stats">Statistics</a></li>
+		    <li><a ng-href="#/manager/im">Messages</a></li>
+		</ul>
+	    </div>
 	</div>
-      </div>
     </div>
-    <div class="menu panel color2 color2bord">
-	<ol class="breadcrumb color3">
-	    Categories:
-	    <li ng-repeat="c in menucategory"><a ng-click="item-template='#/manager/$index'" >{{c.name}}</a></li>
-	</ol>
-	<div ng-include="item-template"></div>
-    </div>
+    <ng-include src="'section/manager/'+section+'.html'"></ng-include>
 </div>
