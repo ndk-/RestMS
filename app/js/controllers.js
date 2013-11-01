@@ -45,8 +45,8 @@ angular.module('myApp.controllers', [])
 	$window.document.title = 'Manager Section';
     }])
     .controller('mMenuCtrl', ['$scope', '$location', '$route', '$window',
-		'MenuCategory', 'MenuItem', function ($scope, $location,
-		$route, $window, MenuCategory, MenuItem) {
+		'$modal', 'MenuCategory', 'MenuItem', function ($scope, $location,
+		$route, $window, $modal, MenuCategory, MenuItem) {
 	$scope.mc = new Object();
 	$scope.mc.idx = 0;
 	$scope.menucategory = MenuCategory.query(function () {
@@ -55,4 +55,22 @@ angular.module('myApp.controllers', [])
 	    });
 	});
 	$scope.menuitem = MenuItem.query();
-}]);
+
+	var modalInstanceCtrl = function () {
+	};
+
+	$scope.edit = function (idx) {
+	    if ($scope.menuitem[idx] != null) {
+//		modal = 'menuedit';
+		var modalInstance = $modal.open({
+    		    templateUrl: 'section/manager/menuedit.html',
+		    controller: modalInstanceCtrl,
+		    resolve: {
+			items: function () {
+        		    return $scope.items;
+    			}
+    		    }
+		});
+	    }
+	}
+    }]);

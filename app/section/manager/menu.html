@@ -2,30 +2,24 @@
 	<ol class="breadcrumb color3">
 	    Categories:
 	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="mc.idx=$index">{{c.name}}</a></li>
-<!--	ng-click="item-template=manager/menucategory/{{$index}}"  -->
 	</ol>
 	<div class="text-center">
 	    <div class="thumbwrap" ng-repeat="i in menuitem | itemsCategory:mc.id">
-		<a ng-href="#/menu/edit({{i.id}})" class="thumbnail">
+		<a ng-click="edit({{i.id}})" class="thumbnail">
 		    <img src="{{i.picture}}" alt="image"></a>
 		<div class="ttitle">
 		    {{i.name}}</div>
-		<div class="btn-group">
-		    <button type="button" class="btn btn-primary">Modify</button>
-		    <button type="button" class="btn btn-primary">Disable</button>
-		    <button type="button" class="btn btn-primary">Remove</button>
+		<div class="btn-group cbtn">
+		    <button type="button" tooltip="Edit" tooltip-placement="left" ng-click="edit({{i.id}})"><i class="fa fa-fw fa-edit"></i></button><br />
+		    <button type="button" tooltip="Disable" tooltip-placement="left" ng-click="disable({{i.id}})"><i class="fa fa-fw fa-eye-slash"></i></button><br />
+		    <button type="button" tooltip="Remove" tooltip-placement="left" ng-click="remove({{i.id}})"><i class="fa fa-fw fa-trash-o"></i></button>
 		</div>
 	    </div>
 	    <div class="thumbwrap">
-		<a ng-href="#/menu/add({{c.id}}))" class="thumbnail">
-			<img src="img/a.png" alt="image"></a>
+		<a ng-click="add({{mc.id}})" class="thumbnail" tooltip="Add New Menu Item">
+			<img src="img/add.png" alt="image"></a>
 		<div class="ttitle">
 		    Add New Menu Item</div>
-		<div class="btn-group">
-		    <button type="button" class="btn btn-primary" disabled="disabled">Modify</button>
-		    <button type="button" class="btn btn-primary" disabled="disabled">Disable</button>
-		    <button type="button" class="btn btn-primary" disabled="disabled">Remove</button>
-		</div>
 	    </div>
 	</div>
     </div>
