@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Edit Menu Item</h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="form">
+	    -{{idx}}-
+	    -{{menuitem[mi.idx].id}}-<br />
+	<label for="mi_name">Title</label>
+	<div class="form-group">
+	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_name" ng-model="menuitem[mi.idx].name" />
+	</div>
+	<label for="mi_desc">Description</label>
+	<div class="form-group">
+	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_desc" ng-model="menuitem[mi.idx].description" />
+	</div>
+	<label for="mi_allrg">Allergy Information</label>
+	<div class="form-group">
+	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_allrg" ng-model="menuitem[mi.idx].allergy" />
+	</div>
+	<label for="mi_cal">Calories</label>
+	<div class="form-group">
+	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_allrg" ng-model="menuitem[mi.idx].calories" />
+	</div>
+	<label class="checkbox-inline" for="mi_spicy">
+	    <input type="checkbox" id="mi_spicy" ng-model="menuitem[mi.idx].spicy"> Spicy
+	</label>
+	<label class="checkbox-inline" for="mi_veget">
+	    <input type="checkbox" id="mi_veget" ng-model="menuitem[mi.idx].vegetarian"> Vegetarian
+	</label>
+	<label class="checkbox-inline" for="mi_glunt">
+	    <input type="checkbox" id="mi_glutn" ng-model="menuitem[mi.idx].gfree"> Gluten Free
+	</label>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" click="save()">Save</button>
+    <button type="button" class="btn btn-primary" click="cancel()">Cancel</button>
+</div>
