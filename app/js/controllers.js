@@ -66,7 +66,7 @@ angular.module('myApp.controllers', [])
 	    	if ($scope.t_item != null) {
 				$scope.modalInstance = $modal.open({
     		    	templateUrl: 'section/manager/menuedit.html',
-		    		//controller: 'modalInstanceCtrl',
+//		    		controller: 'modalInstanceCtrl',
 		    		scope: $scope,
 //		    		resolve: {
 //						items: function () {
@@ -86,25 +86,13 @@ angular.module('myApp.controllers', [])
 				}
 			}
 		};
+// The disable button issue		
 		$scope.disable = function (idx) {
 			$scope.t_item = $filter('getById')($scope.menuitem, idx);
 	    	if ($scope.t_item != null) {
 	    		$scope.t_item.state = !($scope.t_item.state);
-				$scope.tid = $scope.t_item.id;
 				$scope.t_item.$save();
 				$scope.menuitem = MenuItem.query();
-//				$scope.t_item.$get({id:$scope.tid});
-	    		//$scope.tid=$scope.t_item.id;
-//	    		$scope.t_item.get({id: 1});
-				//while ($scope.t_item.$save().$resolved == false);
-				
-				
-//				$scope.menuitem = MenuItem.query(function(){
-//					var len = $scope.menuitem.len;
-//					for (var i in $scope.menuitem) {
-//						$scope.menuitem[i].state = ($scope.menuitem[i].state == 1) ? true : false; 
-//					}
-//				})
 			}
 		}
 	}]);
