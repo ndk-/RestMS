@@ -4,14 +4,14 @@
 	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="mc.idx=$index">{{c.name}}</a></li>
 	</ol>
 	<div class="text-center">
-	    <div class="thumbwrap" ng-repeat="i in menuitem | itemsCategory:mc.id">
+	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
 		<a ng-click="edit({{i.id}})" class="thumbnail">
 		    <img src="{{i.picture}}" alt="image"></a>
 		<div class="ttitle">
 		    {{i.name}}</div>
 		<div class="btn-group cbtn">
 		    <button type="button" tooltip="Edit" tooltip-placement="left" ng-click="edit({{i.id}})"><i class="fa fa-fw fa-edit"></i></button><br />
-		    <button type="button" tooltip="Disable" tooltip-placement="left" ng-click="disable({{i.id}})"><i class="fa fa-fw fa-eye-slash"></i></button><br />
+		    <button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disable({{i.id}})"><i class="fa fa-fw fa-eye-slash"></i></button><br />
 		    <button type="button" tooltip="Remove" tooltip-placement="left" ng-click="remove({{i.id}})"><i class="fa fa-fw fa-trash-o"></i></button>
 		</div>
 	    </div>

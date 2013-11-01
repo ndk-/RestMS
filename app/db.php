@@ -1,5 +1,10 @@
 <?php
 
+
+//@$requestBody = 'Hi! '.file_get_contents('php://input');
+@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp', print_r($_SERVER, true));
+
+
 $dsn = 'mysql://dn0086:csce4444p@student-db/dn0086/';
 $clients = array
 (
@@ -242,7 +247,7 @@ if (in_array($http = strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT'
 
 	if ((array_key_exists('CONTENT_TYPE', $_SERVER) === true) && (empty($data) !== true))
 	{
-		if (strcasecmp($_SERVER['CONTENT_TYPE'], 'application/json') === 0)
+		if (strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== FALSE)
 		{
 			$GLOBALS['_' . $http] = json_decode($data, true);
 		}
@@ -373,20 +378,23 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 	else if (is_array($GLOBALS['_PUT']) === true)
 	{
 		$data = array();
+		$adata = array();
 
 		foreach ($GLOBALS['_PUT'] as $key => $value)
 		{
-			$data[$key] = sprintf('`%s` = ?', $key);
+			if ($key != 'id') {
+				$data[$key] = sprintf('`%s` = ?', $key);
+				$adata[$key] = sprintf ('%s', $value);
+			}
 		}
 
 		$query = array
 		(
-			sprintf('UPDATE `%s` SET %s WHERE `%s` = ?', $table, implode(', ', $data), 'id'),
+			sprintf('UPDATE `%s` SET %s WHERE `%s` = %s', $table, implode(', ', $data), 'id', $id),
 		);
 
 		$query = sprintf('%s;', implode(' ', $query));
-		$result = ArrestDB::Query($query, $GLOBALS['_PUT']);
-
+		$result = ArrestDB::Query($query, $adata);
 		if ($result === false)
 		{
 			$result = array
@@ -398,7 +406,6 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 				),
 			);
 		}
-
 		else
 		{
 			$result = array

@@ -1,39 +1,37 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
 	<h4 class="modal-title">Edit Menu Item</h4>
 </div>
 <div class="modal-body">
     <form role="form" class="form">
-	    -{{idx}}-
-	    -{{menuitem[mi.idx].id}}-<br />
 	<label for="mi_name">Title</label>
 	<div class="form-group">
-	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_name" ng-model="menuitem[mi.idx].name" />
+	    <input type="text" class="form-control" placeholder="Name" id="mi_name" ng-model="t_item.name" />
 	</div>
 	<label for="mi_desc">Description</label>
 	<div class="form-group">
-	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_desc" ng-model="menuitem[mi.idx].description" />
+	    <input type="text" class="form-control" placeholder="Description" id="mi_desc" ng-model="t_item.description" />
+	</div>
+	<label for="mi_pict">Picture</label>
+	<div class="form-group">
+	    <input type="text" class="form-control" placeholder="Picture" id="mi_pict" ng-model="t_item.picture" />
 	</div>
 	<label for="mi_allrg">Allergy Information</label>
 	<div class="form-group">
-	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_allrg" ng-model="menuitem[mi.idx].allergy" />
+	    <input type="text" class="form-control" placeholder="Allergy Information" id="mi_allrg" ng-model="t_item.allergy" />
 	</div>
 	<label for="mi_cal">Calories</label>
 	<div class="form-group">
-	    <input type="text" class="form-control" placeholder="Menu Item Name" id="mi_allrg" ng-model="menuitem[mi.idx].calories" />
+	    <input type="text" class="form-control" placeholder="Calories" id="mi_allrg" ng-model="t_item.calories" />
 	</div>
-	<label class="checkbox-inline" for="mi_spicy">
-	    <input type="checkbox" id="mi_spicy" ng-model="menuitem[mi.idx].spicy"> Spicy
-	</label>
-	<label class="checkbox-inline" for="mi_veget">
-	    <input type="checkbox" id="mi_veget" ng-model="menuitem[mi.idx].vegetarian"> Vegetarian
-	</label>
-	<label class="checkbox-inline" for="mi_glunt">
-	    <input type="checkbox" id="mi_glutn" ng-model="menuitem[mi.idx].gfree"> Gluten Free
-	</label>
+	<div class="btn-group">
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Spicy" tooltip-placement="bottom" ng-model="t_item.spicy"><i class="fa fa-fw fa-fire"></i></button>
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Vegetarian" tooltip-placement="bottom" ng-model="t_item.vegetarian"><i class="fa fa-fw fa-leaf"></i></button>
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Gluten Free" tooltip-placement="bottom" ng-model="t_item.gfree"><i class="fa fa-fw fa-lemon-o"></i></button>
+	</div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" click="save()">Save</button>
-    <button type="button" class="btn btn-primary" click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+    <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
 </div>
