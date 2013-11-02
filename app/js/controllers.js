@@ -94,6 +94,7 @@ angular.module('myApp.controllers', [])
 				$scope.t_item.$save();
 //				$scope.t_item.$get({id:$scope.tid});
 				$scope.menuitem = MenuItem.query();
+				console.log($scope.menuitem);
 			}
 		}
 		$scope.addItem = function(idx) {
@@ -111,5 +112,10 @@ angular.module('myApp.controllers', [])
 				$scope.menuitem = MenuItem.query();
 				$scope.modalInstance.close('success');
 			}
+		}
+		$scope.removeItem = function(idx) {
+			$scope.t_item = $filter('getById')($scope.menuitem, idx);
+			$scope.t_item.$remove();
+			$scope.menuitem = MenuItem.query();
 		}
 	}]);

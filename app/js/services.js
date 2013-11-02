@@ -22,10 +22,19 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-//		    			console.log(data);
+		    			data.spicy = (data.spicy == true) ? "1" : "0";
+		    			data.gfree = (data.gfree == true) ? "1" : "0";
+		    			data.state = (data.state == true) ? "1" : "0";
+		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
 		    			return data;
 		    		}
-		    	]),
+		    	])
+	    	},
+	    	remove: {
+				method: 'DELETE',
+				params: {
+		    		id: '@id'
+		    	}
 	    	},
 	    	query: {
 				method: 'GET',
