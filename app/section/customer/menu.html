@@ -6,7 +6,7 @@
 	<div class="text-center">
 	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
 			<a ng-click="edit(i.id)" class="thumbnail">
-		    	<img src="{{i.picture}}" alt="image"></a>
+		    	<img src="img/{{i.picture}}" alt="image"></a>
 			<div class="ttitle">
 		    	{{i.name}}</div>
 			<div class="ttitle cost">
@@ -18,13 +18,13 @@
 				<i class="fa fa-leaf" ng-show="i.vegetarian"></i>
 				<i class="fa fa-lemon-o" ng-show="i.gfree"></i>
 			</div>
-			<div class="btn-group cbtn">
-		    	<button type="button" tooltip="Read Description and Customize" tooltip-placement="right" ng-click="editItem(i.id)">
+			<div class="btn-group-vertical cbtn">
+		    	<button type="button" class="btn" tooltip="Read Description and Customize" tooltip-placement="right" ng-click="editItem(i.id)">
 			    	<i class="fa fa-fw fa-info"></i>
-			    </button><br />
-			    <button type="button" class="btn" tooltip="Simply Add to Your Cart" tooltip-placement="right" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)">
+			    </button>
+			    <button type="button" class="btn" tooltip="Simply Add to Your Cart" tooltip-placement="right" ng-click="disableItem(i.id)">
 		    		<i class="fa fa-fw fa-plus"></i>
-		    	</button><br />
+		    	</button>
 			</div>
 	    </div>
 	</div>
