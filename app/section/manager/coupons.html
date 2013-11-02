@@ -27,11 +27,11 @@
 			<input type="text" class="form-control" ng-model="i.description" placeholder="Coupon Description" ng-disabled="!i.fstate" />
 	    </div>
 	    <div class="col-md-2 col-lg-2 text-center">
-			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 0, 'label-info': i.pct_fix == 1}">
+			<label class="radio-inline label" ng-class="{'label-success': i.pct_fix == 0, 'label-info': i.pct_fix == 1}">
 				<input type="radio" ng-value="1" ng-model="i.pct_fix" ng-disabled="!i.fstate" />
 		    	Fixed
 			</label>
-			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 1, 'label-info': i.pct_fix == 0}">
+			<label class="radio-inline label" ng-class="{'label-success': i.pct_fix == 1, 'label-info': i.pct_fix == 0}">
 		    	<input type="radio" ng-value="0" ng-model="i.pct_fix" ng-disabled="!i.fstate" />
 		    	Percent
 			</label>
@@ -57,11 +57,11 @@
 			<input type="text" class="form-control" ng-model="c_item.description" placeholder="Coupon Description" />
 	    </div>
 	    <div class="col-md-2 col-lg-2 text-center">
-			<label class="radio-inline label" ng-class="{'label-default': c_item.pct_fix == 0, 'label-info': c_item.pct_fix == 1}">
+			<label class="radio-inline label" ng-class="{'label-success': c_item.pct_fix == 0, 'label-info': c_item.pct_fix == 1}">
 				<input type="radio" ng-model="c_item.pct_fix" value="1" />
 		    	Fixed
 			</label>
-	 		<label class="radio-inline label" ng-class="{'label-default': c_item.pct_fix == 1, 'label-info': c_item.pct_fix == 0}">
+	 		<label class="radio-inline label" ng-class="{'label-success': c_item.pct_fix == 1, 'label-info': c_item.pct_fix == 0}">
 		    	<input type="radio" ng-model="c_item.pct_fix" value="0" />
 		    	Percent
 			</label>

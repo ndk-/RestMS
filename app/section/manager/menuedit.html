@@ -29,13 +29,19 @@
 	    <input type="text" class="form-control" placeholder="Calories" id="mi_allrg" ng-model="t_item.calories" />
 	</div>
 	<div class="btn-group">
-	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Spicy" tooltip-placement="bottom" ng-model="t_item.spicy"><i class="fa fa-fw fa-fire"></i></button>
-	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Vegetarian" tooltip-placement="bottom" ng-model="t_item.vegetarian"><i class="fa fa-fw fa-leaf"></i></button>
-	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Gluten Free" tooltip-placement="bottom" ng-model="t_item.gfree"><i class="fa fa-fw fa-lemon-o"></i></button>
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Spicy" tooltip-placement="bottom" ng-model="t_item.spicy" ng-class="{'btn-info': t_item.spicy}">
+	    	<i class="fa fa-fw fa-fire"></i>
+	    </button>
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Vegetarian" tooltip-placement="bottom" ng-model="t_item.vegetarian" ng-class="{'btn-info': t_item.vegetarian}">
+	    	<i class="fa fa-fw fa-leaf"></i>
+	    </button>
+	    <button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Gluten Free" tooltip-placement="bottom" ng-model="t_item.gfree" ng-class="{'btn-info': t_item.gfree}">
+	    	<i class="fa fa-fw fa-lemon-o"></i>
+	    </button>
 	</div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-    <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="save()"><i class="fa fa-save"></i> Save</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="cancel()"><i class="fa fa-times"></i> Cancel</button>
 </div>
