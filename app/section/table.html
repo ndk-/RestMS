@@ -1,0 +1,20 @@
+<div class="container">
+    <form class="form-signin" name="CustomerForm" ng-submit="Submit()">
+      <div class="panel vcenter vcenter-table padding10 color2 color2bord">
+        <div class="panel-heading color3">
+            <h3 class="panel-title">Welcome to Our Restaurant!</h3>
+        </div>
+        <div class="form-group">
+	    <input type="text" class="form-control input-lg" name="username" placeholder="Please Enter Your Name (optional)" ng-model="customer.name" />
+	    <input type="email" class="form-control input-lg" placeholder="Please Enter Your Email (optional)" ng-model="customer.email" />
+	    <div class="btn-group btn-block">
+	    <button type="submit" class="btn btn-lg btn-primary">
+	    	<i class="fa fa-sign-in"></i> Continue
+	    </button>
+	    <button type="button" class="btn btn-lg btn-primary" btn-checkbox ng-model="customer.cw_state" ng-class="{'btn-info': customer.cw_state}">
+	    	<i class="fa fa-phone"></i> Call a Waiter
+	    </button>
+        </div>
+     </div>
+    </form>
+</div>

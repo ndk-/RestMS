@@ -7,8 +7,8 @@ angular.module('myApp.controllers', [])
     .controller('LoginCtrl', ['$scope', '$http', '$location', '$route',
 		    '$window', '$rootScope', function($scope, $http, $location,
 			    $route, $window, $rootScope) {
-	    $window.document.title = 'Login';
-	    $scope.Submit = function() {
+		$window.document.title = 'Login';
+		$scope.Submit = function() {
 			var credentials = {
 		    	'username' : $scope.username,
 		    	'password' : CryptoJS.SHA256($scope.password)
@@ -39,6 +39,31 @@ angular.module('myApp.controllers', [])
     		})
     	}
     }])
+// Table login controller
+    .controller('TableLoginCtrl', ['$scope', '$http', '$location', '$route',
+		    '$window', '$rootScope', 'Customer', function($scope, $http,
+		    	$location,$route, $window, $rootScope, Customer) {
+		$window.document.title = 'Welcome To Our Restaurant!';
+		$scope.customer = new Customer;
+		$scope.Submit = function() {
+			$scope.customer.$getByEmail()
+				.then(function(data) {
+					if (data.id == null) {
+						$scope.customer.pts = 0;
+						$scope.customer.create_time = new Date().toJSON();
+						$scope.customer.last_time = new Date().toJSON();
+						$scope.customer.$create();
+					}
+					else {
+						$scope.customer.pts += 10;
+						$scope.customer.last_time = new Date().toJSON();
+						$rootScope.customer = data;
+						$scope.customer.$save();
+					}
+					$location.path('/customer');
+				});
+		}
+	}])
 // Initial manager controller
     .controller('ManagerCtrl', ['$rootScope', '$scope', '$location', '$route',
 		'$window', function ($rootScope, $scope, $location, $route,
@@ -203,3 +228,28 @@ angular.module('myApp.controllers', [])
 			$scope.c_item.pct_fix = '0';
 		}
 	}])
+    .controller('CustomerCtrl', ['$rootScope', '$scope', '$location', '$route',
+		'$window', function ($rootScope, $scope, $location, $route,
+		$window) {
+		$scope.name = $rootScope.customer.name;
+//	if ($rootScope.access == null)
+//	    $location.path('/login');
+		$scope.section = 'menu';
+		$window.document.title = 'Our Restaurant';
+    }])
+    .controller('cMenuCtrl', ['$rootScope', '$scope', '$location', '$route',
+		'$window', 'MenuCategory','MenuItem', function ($rootScope, $scope,
+		$location, $route, $window, MenuCategory, MenuItem) {
+		$window.document.title = 'Our Menu';
+		$scope.customer = $rootScope.customer;
+		$scope.mc = new Object();
+		$scope.mc.idx = 0;
+		$scope.menucategory = MenuCategory.query(function () {
+	    	$scope.$watch('mc.idx', function() {
+				$scope.mc.id = parseInt($scope.menucategory[$scope.mc.idx].id);
+				$scope.mc.heartyidx = parseInt($scope.menucategory[$scope.mc.idx].heartyidx)
+	    	})
+		});
+		
+		$scope.menuitem = MenuItem.cQuery();
+    }])

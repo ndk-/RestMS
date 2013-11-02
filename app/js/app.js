@@ -9,6 +9,14 @@ angular.module('myApp', ['ngRoute', 'myApp.filters', 'myApp.services',
 	    templateUrl : 'section/login.html',
 	    controller : 'LoginCtrl'
 	});
+	$routeProvider.when('/table', {
+		templateUrl : 'section/table.html',
+		controller : 'TableLoginCtrl'
+	});
+	$routeProvider.when('/customer', {
+		templateUrl : 'section/customer.html',
+//		controller : 'CustomerCtrl'
+	});
 	$routeProvider.when('/manager', {
 	    templateUrl : 'section/manager.html',
 	    controller : 'ManagerCtrl'

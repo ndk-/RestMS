@@ -1,0 +1,38 @@
+<div class="menu panel color2 color2bord" ng-controller="cMenuCtrl">
+	<ol class="breadcrumb color3">
+	    Categories:
+	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="mc.idx=$index">{{c.name}}</a></li>
+	</ol>
+	<div class="text-center">
+	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
+			<a ng-click="edit(i.id)" class="thumbnail">
+		    	<img src="{{i.picture}}" alt="image"></a>
+			<div class="ttitle">
+		    	{{i.name}}</div>
+			<div class="ttitle cost">
+				${{i.price}}
+			</div>
+			<div class="icons">
+				<i class="fa fa-heart" ng-show="(i.calories < mc.heartyidx)"></i>
+				<i class="fa fa-fire" ng-show="i.spicy"></i>
+				<i class="fa fa-leaf" ng-show="i.vegetarian"></i>
+				<i class="fa fa-lemon-o" ng-show="i.gfree"></i>
+			</div>
+			<div class="btn-group cbtn">
+		    	<button type="button" tooltip="Read Description and Customize" tooltip-placement="right" ng-click="editItem(i.id)">
+			    	<i class="fa fa-fw fa-info"></i>
+			    </button><br />
+			    <button type="button" class="btn" tooltip="Simply Add to Your Cart" tooltip-placement="right" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)">
+		    		<i class="fa fa-fw fa-plus"></i>
+		    	</button><br />
+			</div>
+	    </div>
+	</div>
+   	<div class="icons-lined">
+   		<span class="label label-success">Information:</span>
+		<i class="fa fa-heart"></i> Hearty 
+		<i class="fa fa-fire"></i> Spicy 
+		<i class="fa fa-leaf"></i> Vegetarian 
+		<i class="fa fa-lemon-o"></i> Gluten Free
+   	</div>
+</div>
