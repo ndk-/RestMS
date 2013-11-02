@@ -100,8 +100,7 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-//		    			data.type = (data.spicy == true) ? "1" : "0";
-//		    			data.state = (data.state == true) ? "1" : "0";
+		    			data[i].state = (parseInt(data[i].state) == 1) ? true : false;
 		    			return data;
 		    		}
 		    	])
@@ -121,8 +120,6 @@ angular.module('myApp.services', ['ngResource'])
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
-//		    				data[i].type = (parseInt(data[i].type) == 1) ? true : false;
-//							data[i].type = parseInt(data[i].type);
 							data[i].cvalue = parseFloat(data[i].cvalue);
 		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
 		    			}
@@ -138,9 +135,75 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-//		    			data.type = (data.type == true) ? "1" : "0";
-//						data[i].type = parseInt(data[i].type);
 		    			data.state = (data.state == true) ? "1" : "0";
+		    			return data;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	},
+	    	create: {
+	    		method: 'POST',
+	    		params: {
+	    			id:	''
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+		    			data.state = (data.state == true) ? "1" : "0";
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			console.log(data);
+		    			console.log(newdata);
+		    			return newdata;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	}
+		})
+    }])
+    .factory('Account', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/access/:id', {}, {
+	    	get: {
+				method: 'GET',
+				params: {
+		    		id: '@id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			return data;
+		    		}
+		    	])
+	    	},
+	    	remove: {
+				method: 'DELETE',
+				params: {
+		    		id: '@id'
+		    	}
+	    	},
+	    	query: {
+				method: 'GET',
+				params: {
+		    		id: '@id' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+/*		    			var len = data.length;
+		    			for (var i=0;i<len;i++) {
+							data[i].cvalue = parseFloat(data[i].cvalue);
+		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
+		    			} */
+		    			return data;
+		    		}
+		    	]),
+				isArray: true
+	    	},
+	    	save: {
+	    		method: 'PUT',
+	    		params: {
+	    			id:	'@id'
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+/*		    			data.type = (data.type == true) ? "1" : "0";
+						data[i].type = parseInt(data[i].type);
+		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -155,7 +218,6 @@ angular.module('myApp.services', ['ngResource'])
 /*		    			data.type = (data.type == true) ? "1" : "0";
 						data.type = parseInt(data.type);
 		    			data.state = (data.state == true) ? "1" : "0"; */
-		    			data.state = (data.state == true) ? "1" : "0";
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			console.log(data);

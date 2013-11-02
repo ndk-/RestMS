@@ -34,7 +34,7 @@ angular.module('myApp.controllers', [])
 						$location.path('/login');
 		    	}})
 		    .error(function(data, status, header, config) {
-				console.log(data);
+				$scope.error = data.error;
     		})
     	}
     }])
@@ -122,24 +122,53 @@ angular.module('myApp.controllers', [])
     .controller('mCouponCtrl', ['$scope', '$location', '$route', '$window',
 		'$modal', '$filter', 'Coupon', function (
 		$scope,	$location, $route, $window, $modal, $filter, Coupon) {
+		$scope.coupon = Coupon.query();
+		$scope.c_item = new Coupon;
+		$scope.c_item.pct_fix = '0';
+		$scope.saveCoupon = function(idx) {
+			$scope.coupon[idx].state = false;
+			$scope.coupon[idx].$save();
 			$scope.coupon = Coupon.query();
+		}
+		$scope.removeCoupon = function(idx) {
+			$scope.coupon[idx].$remove();
+			$scope.menuitem = Coupon.query();
+		}
+		$scope.addCoupon = function() {
+			$scope.c_item.$create();
+			console.log($scope.c_item);
+			$scope.menuitem = Coupon.query();
 			$scope.c_item = new Coupon;
 			$scope.c_item.pct_fix = '0';
-			$scope.saveCoupon = function(idx) {
-				$scope.coupon[idx].state = false;
-				$scope.coupon[idx].$save();
-				$scope.coupon = Coupon.query();
+		}
+	}])
+    .controller('mAccountCtrl', ['$scope', '$location', '$route', '$window',
+		'$modal', '$filter', 'Account', function (
+		$scope,	$location, $route, $window, $modal, $filter, Account) {
+		$scope.account = Account.query();
+		$scope.accountChange = function(idx) {
+			$scope.username = $scope.account[idx].username;
+			$scope.tpasswd = new Object();
+			$scope.error = '';
+			$scope.modalInstance = $modal.open({
+    		   	templateUrl: 'section/manager/changepassword.html',
+		    	scope: $scope,
+  			});
+			$scope.cancel = function(){
+				$scope.modalInstance.dismiss('cancel');
 			}
-			$scope.removeCoupon = function(idx) {
-				$scope.coupon[idx].$remove();
-				$scope.menuitem = Coupon.query();
+			$scope.save = function() {
+				console.log($scope.tpasswd);
+				if ($scope.tpasswd.password1 != $scope.tpasswd.password2)
+					$scope.error = 'Passwords do not match';
+				else {
+					$scope.modalInstance.close('success');
+					$scope.account[idx].password = CryptoJS.SHA256(
+						$scope.tpasswd.password1)
+							.toString(CryptoJS.enc.Hex);
+					$scope.account[idx].$save();
+					$scope.account = Account.query();
+				}
 			}
-			$scope.addCoupon = function() {
-				$scope.c_item.$create();
-				console.log($scope.c_item);
-				$scope.menuitem = Coupon.query();
-				$scope.c_item = new Coupon;
-				$scope.c_item.pct_fix = '0';
-			}
-			console.log($scope.coupon);
+		}
 	}]);
