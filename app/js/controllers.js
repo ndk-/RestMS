@@ -61,7 +61,7 @@ angular.module('myApp.controllers', [])
 		$scope.menuitem = MenuItem.query();
 		$scope.modalInstance = null;
 
-		$scope.edit = function (idx) {
+		$scope.editItem = function (idx) {
 			$scope.t_item = $filter('getById')($scope.menuitem, idx);
 	    	if ($scope.t_item != null) {
 				$scope.modalInstance = $modal.open({
@@ -80,19 +80,36 @@ angular.module('myApp.controllers', [])
 				$scope.save = function() {
 					$scope.tid = $scope.t_item.id;
 					$scope.t_item.$save();
-					$scope.t_item.$get({id:$scope.tid});
-					$scope.modalInstance.close('success');
+					console.log($scope.t_item);
 					$scope.menuitem = MenuItem.query();
+					$scope.modalInstance.close('success');
 				}
 			}
 		};
 // The disable button issue		
-		$scope.disable = function (idx) {
+		$scope.disableItem = function (idx) {
 			$scope.t_item = $filter('getById')($scope.menuitem, idx);
 	    	if ($scope.t_item != null) {
 	    		$scope.t_item.state = !($scope.t_item.state);
 				$scope.t_item.$save();
+//				$scope.t_item.$get({id:$scope.tid});
 				$scope.menuitem = MenuItem.query();
+			}
+		}
+		$scope.addItem = function(idx) {
+			$scope.t_item = new MenuItem;
+			$scope.t_item.mc_id = idx;
+			$scope.modalInstance = $modal.open({
+  		    	templateUrl: 'section/manager/menuedit.html',
+		    		scope: $scope,
+  			});
+			$scope.cancel = function(){
+				$scope.modalInstance.dismiss('cancel');
+			}
+			$scope.save = function() {
+				$scope.t_item.$create();
+				$scope.menuitem = MenuItem.query();
+				$scope.modalInstance.close('success');
 			}
 		}
 	}]);

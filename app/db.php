@@ -1,8 +1,9 @@
 <?php
 
 
-//@$requestBody = 'Hi! '.file_get_contents('php://input');
-@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp', print_r($_SERVER, true));
+//$requestBody = file_get_contents('php://input');
+//@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp', print_r($requestBody, true));
+@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp1', print_r($_SERVER, true));
 
 
 $dsn = 'mysql://dn0086:csce4444p@student-db/dn0086/';
@@ -292,10 +293,16 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 		foreach ($_POST as $row)
 		{
 			$data = array();
+			$adata = array();
 
 			foreach ($row as $key => $value)
 			{
 				$data[sprintf('`%s`', $key)] = '?';
+			}
+
+			foreach ($row as $key => $value)
+			{
+				$adata[sprintf('`%s`', $key)] = $value;
 			}
 
 			$query = array
@@ -306,9 +313,12 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 			$queries[] = array
 			(
 				sprintf('%s;', implode(' ', $query)),
-				$data,
+				$adata,
 			);
+			@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp2', print_r($queries, true));
 		}
+
+		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp3', print_r($queries, true));
 
 		if (count($queries) > 1)
 		{

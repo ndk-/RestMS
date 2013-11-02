@@ -10,13 +10,13 @@
 		<div class="ttitle">
 		    {{i.name}}</div>
 		<div class="btn-group cbtn">
-		    <button type="button" tooltip="Edit" tooltip-placement="left" ng-click="edit({{i.id}})"><i class="fa fa-fw fa-edit"></i></button><br />
-		    <button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disable({{i.id}})"><i class="fa fa-fw fa-eye-slash"></i></button><br />
-		    <button type="button" tooltip="Remove" tooltip-placement="left" ng-click="remove({{i.id}})"><i class="fa fa-fw fa-trash-o"></i></button>
+		    <button type="button" tooltip="Edit" tooltip-placement="left" ng-click="editItem(i.id)"><i class="fa fa-fw fa-edit"></i></button><br />
+		    <button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)"><i class="fa fa-fw fa-eye-slash"></i></button><br />
+		    <button type="button" tooltip="Remove" tooltip-placement="left" ng-click="removeItem(i.id)"><i class="fa fa-fw fa-trash-o"></i></button>
 		</div>
 	    </div>
 	    <div class="thumbwrap">
-		<a ng-click="add({{mc.id}})" class="thumbnail" tooltip="Add New Menu Item">
+		<a ng-click="addItem(mc.id)" class="thumbnail" tooltip="Add New Menu Item">
 			<img src="img/add.png" alt="image"></a>
 		<div class="ttitle">
 		    Add New Menu Item</div>

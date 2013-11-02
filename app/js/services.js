@@ -51,6 +51,34 @@ angular.module('myApp.services', ['ngResource'])
 	    		params: {
 	    			id:	'@id'
 	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+		    			data.spicy = (data.spicy == true) ? "1" : "0";
+		    			data.gfree = (data.gfree == true) ? "1" : "0";
+		    			data.state = (data.state == true) ? "1" : "0";
+		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
+		    			return data;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	},
+	    	create: {
+	    		method: 'POST',
+	    		params: {
+	    			id:	''
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+		    			data.spicy = (data.spicy == true) ? "1" : "0";
+		    			data.gfree = (data.gfree == true) ? "1" : "0";
+		    			data.state = (data.state == true) ? "1" : "0";
+		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			console.log(data);
+		    			console.log(newdata);
+		    			return newdata;
+		    		}
+		    	].concat($http.defaults.transformRequest)
 	    	}
 		})
     }]);
