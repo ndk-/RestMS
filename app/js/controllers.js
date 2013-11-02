@@ -3,6 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
+// Login controller
     .controller('LoginCtrl', ['$scope', '$http', '$location', '$route',
 		    '$window', '$rootScope', function($scope, $http, $location,
 			    $route, $window, $rootScope) {
@@ -38,6 +39,7 @@ angular.module('myApp.controllers', [])
     		})
     	}
     }])
+// Initial manager controller
     .controller('ManagerCtrl', ['$rootScope', '$scope', '$location', '$route',
 		'$window', function ($rootScope, $scope, $location, $route,
 		$window) {
@@ -46,6 +48,7 @@ angular.module('myApp.controllers', [])
 		$rootScope.section = 'menu';
 		$window.document.title = 'Manager Section';
     }])
+// manager Menu Controller
     .controller('mMenuCtrl', ['$scope', '$location', '$route', '$window',
 		'$modal', '$filter', 'MenuCategory', 'MenuItem', function (
 		$scope,	$location, $route, $window, $modal, $filter, 
@@ -119,6 +122,7 @@ angular.module('myApp.controllers', [])
 			$scope.menuitem = MenuItem.query();
 		}
 	}])
+// Manager Coupon controller
     .controller('mCouponCtrl', ['$scope', '$location', '$route', '$window',
 		'$modal', '$filter', 'Coupon', function (
 		$scope,	$location, $route, $window, $modal, $filter, Coupon) {
@@ -142,6 +146,7 @@ angular.module('myApp.controllers', [])
 			$scope.c_item.pct_fix = '0';
 		}
 	}])
+// Manager Account Controller
     .controller('mAccountCtrl', ['$scope', '$location', '$route', '$window',
 		'$modal', '$filter', 'Account', function (
 		$scope,	$location, $route, $window, $modal, $filter, Account) {
@@ -172,6 +177,7 @@ angular.module('myApp.controllers', [])
 			}
 		}
 	}])
+// Manager Game Controller
     .controller('mGameCtrl', ['$scope', '$location', '$route', '$window',
 		'$modal', '$filter', 'Coupon', function (
 		$scope,	$location, $route, $window, $modal, $filter, Coupon) {

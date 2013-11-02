@@ -4,6 +4,7 @@
 
 
 angular.module('myApp.services', ['ngResource'])
+// Menu category service
     .factory('MenuCategory', [ '$resource', function ($resource) {
 	return $resource('db.php/menucategory/:id', {}, {
 	    query: {
@@ -13,6 +14,7 @@ angular.module('myApp.services', ['ngResource'])
 	    }
 	})
     }])
+// Menu items service    
     .factory('MenuItem', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/menuitem/:id', {}, {
 	    	get: {
@@ -91,6 +93,7 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+// Coupon service
     .factory('Coupon', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/coupon/:cmd/:id', {}, {
 	    	get: {
@@ -183,6 +186,7 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+// Account service    
     .factory('Account', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/access/:id', {}, {
 	    	get: {
