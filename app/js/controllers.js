@@ -118,4 +118,28 @@ angular.module('myApp.controllers', [])
 			$scope.t_item.$remove();
 			$scope.menuitem = MenuItem.query();
 		}
+	}])
+    .controller('mCouponCtrl', ['$scope', '$location', '$route', '$window',
+		'$modal', '$filter', 'Coupon', function (
+		$scope,	$location, $route, $window, $modal, $filter, Coupon) {
+			$scope.coupon = Coupon.query();
+			$scope.c_item = new Coupon;
+			$scope.c_item.pct_fix = '0';
+			$scope.saveCoupon = function(idx) {
+				$scope.coupon[idx].state = false;
+				$scope.coupon[idx].$save();
+				$scope.coupon = Coupon.query();
+			}
+			$scope.removeCoupon = function(idx) {
+				$scope.coupon[idx].$remove();
+				$scope.menuitem = Coupon.query();
+			}
+			$scope.addCoupon = function() {
+				$scope.c_item.$create();
+				console.log($scope.c_item);
+				$scope.menuitem = Coupon.query();
+				$scope.c_item = new Coupon;
+				$scope.c_item.pct_fix = '0';
+			}
+			console.log($scope.coupon);
 	}]);

@@ -5,7 +5,7 @@
 	</ol>
 	<div class="text-center">
 	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
-		<a ng-click="edit({{i.id}})" class="thumbnail">
+		<a ng-click="edit(i.id)" class="thumbnail">
 		    <img src="{{i.picture}}" alt="image"></a>
 		<div class="ttitle">
 		    {{i.name}}</div>
