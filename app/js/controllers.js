@@ -238,8 +238,9 @@ angular.module('myApp.controllers', [])
 		$window.document.title = 'Our Restaurant';
     }])
     .controller('cMenuCtrl', ['$rootScope', '$scope', '$location', '$route',
-		'$window', 'MenuCategory','MenuItem', function ($rootScope, $scope,
-		$location, $route, $window, MenuCategory, MenuItem) {
+		'$window', '$modal', '$filter', 'MenuCategory','MenuItem', 
+		function ($rootScope, $scope, $location, $route, $window, $modal,
+			$filter, MenuCategory, MenuItem) {
 		$window.document.title = 'Our Menu';
 		$scope.customer = $rootScope.customer;
 		$scope.mc = new Object();
@@ -250,6 +251,17 @@ angular.module('myApp.controllers', [])
 				$scope.mc.heartyidx = parseInt($scope.menucategory[$scope.mc.idx].heartyidx)
 	    	})
 		});
-		
 		$scope.menuitem = MenuItem.cQuery();
+
+		$scope.customizeItem = function(idx) {
+			$scope.t_item = $filter('getById')($scope.menuitem, idx);
+			$scope.modalInstance = $modal.open({
+    		   	templateUrl: 'section/customer/customize.html',
+		    	scope: $scope
+  			})
+			$scope.cancel = function(){
+				$scope.modalInstance.dismiss('cancel');
+			}
+		}
+		
     }])
