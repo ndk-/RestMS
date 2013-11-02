@@ -124,9 +124,9 @@ angular.module('myApp.controllers', [])
 		$scope,	$location, $route, $window, $modal, $filter, Coupon) {
 		$scope.coupon = Coupon.query();
 		$scope.c_item = new Coupon;
-		$scope.c_item.pct_fix = '0';
+		$scope.c_item.pct_fix = '1';
 		$scope.saveCoupon = function(idx) {
-			$scope.coupon[idx].state = false;
+			$scope.coupon[idx].fstate = false;
 			$scope.coupon[idx].$save();
 			$scope.coupon = Coupon.query();
 		}
@@ -171,4 +171,29 @@ angular.module('myApp.controllers', [])
 				}
 			}
 		}
-	}]);
+	}])
+    .controller('mGameCtrl', ['$scope', '$location', '$route', '$window',
+		'$modal', '$filter', 'Coupon', function (
+		$scope,	$location, $route, $window, $modal, $filter, Coupon) {
+		$scope.coupon = Coupon.queryGame();
+		$scope.c_item = new Coupon;
+		$scope.c_item.pct_fix = '0';
+		$scope.c_item.state = '1'; 
+		$scope.a1 = true; // open first element of accordion
+		$scope.saveCoupon = function(idx) {
+			$scope.coupon[idx].fstate = false;
+			$scope.coupon[idx].$save();
+			$scope.coupon = Coupon.query();
+		}
+		$scope.removeCoupon = function(idx) {
+			$scope.coupon[idx].$remove();
+			$scope.menuitem = Coupon.query();
+		}
+		$scope.addCoupon = function() {
+			$scope.c_item.$create();
+			console.log($scope.c_item);
+			$scope.menuitem = Coupon.query();
+			$scope.c_item = new Coupon;
+			$scope.c_item.pct_fix = '0';
+		}
+	}])

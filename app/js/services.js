@@ -92,7 +92,7 @@ angular.module('myApp.services', ['ngResource'])
 		})
     }])
     .factory('Coupon', [ '$http', '$resource', function ($http, $resource) {
-		return $resource('db.php/coupon/:id', {}, {
+		return $resource('db.php/coupon/:cmd/:id', {}, {
 	    	get: {
 				method: 'GET',
 				params: {
@@ -100,7 +100,10 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-		    			data[i].state = (parseInt(data[i].state) == 1) ? true : false;
+						data.cvalue = parseFloat(data.cvalue);
+						data.pts = parseInt(data.pts);
+	    				data.state = (parseInt(data.state));
+						data.fstate = false;
 		    			return data;
 		    		}
 		    	])
@@ -121,7 +124,29 @@ angular.module('myApp.services', ['ngResource'])
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
 							data[i].cvalue = parseFloat(data[i].cvalue);
-		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
+							data[i].pts = parseInt(data[i].pts);
+							data[i].fstate = false;
+		    				data[i].state = (parseInt(data[i].state));
+		    			}
+		    			return data;
+		    		}
+		    	]),
+				isArray: true
+	    	},
+	    	queryGame: {
+				method: 'GET',
+				params: {
+					cmd: 'state',
+		    		id: '1' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			var len = data.length;
+		    			for (var i=0;i<len;i++) {
+							data[i].cvalue = parseFloat(data[i].cvalue);
+							data[i].pts = parseInt(data[i].pts);
+							data[i].fstate = false;
+		    				data[i].state = (parseInt(data[i].state));
 		    			}
 		    			return data;
 		    		}
@@ -135,7 +160,7 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-		    			data.state = (data.state == true) ? "1" : "0";
+		    			delete data.fstate;
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -147,7 +172,7 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-		    			data.state = (data.state == true) ? "1" : "0";
+						delete data.fstate;
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			console.log(data);

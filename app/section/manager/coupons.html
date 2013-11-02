@@ -9,8 +9,11 @@
 	    <div class="col-md-2 col-lg-2 text-center">
 			<label>Type</label>
 	    </div>
-	    <div class="col-md-2 col-lg-2 text-center">
+	    <div class="col-md-1 col-lg-1 text-center">
 			<label>Value</label>
+	    </div>
+	    <div class="col-md-1 col-lg-1 text-center">
+			<label>Points</label>
 	    </div>
 	    <div class="col-md-1 col-lg-1">
 			<label>Action</label>
@@ -18,28 +21,32 @@
 	</div>
 	<div class="form-group" ng-repeat="i in coupon">
 	    <div class="col-md-2 col-lg-2">
-			<input type="text" class="form-control" ng-model="i.name" placeholder="Coupon" ng-disabled="!i.state" />
+			<input type="text" class="form-control" ng-model="i.name" placeholder="Coupon" ng-disabled="!i.fstate" />
 	    </div>
 	    <div class="col-md-4 col-lg-4">
-			<input type="text" class="form-control" ng-model="i.description" placeholder="Coupon Description" ng-disabled="!i.state" />
+			<input type="text" class="form-control" ng-model="i.description" placeholder="Coupon Description" ng-disabled="!i.fstate" />
 	    </div>
 	    <div class="col-md-2 col-lg-2 text-center">
-			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 1, 'label-info': i.pct_fix == 0}">
-		    	<input type="radio" ng-value="0" ng-model="i.pct_fix" ng-disabled="!i.state" />
+			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 0, 'label-info': i.pct_fix == 1}">
+				<input type="radio" ng-value="1" ng-model="i.pct_fix" ng-disabled="!i.fstate" />
 		    	Fixed
 			</label>
-			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 0, 'label-info': i.pct_fix == 1}">
-				<input type="radio" ng-value="1" ng-model="i.pct_fix" ng-disabled="!i.state" />
+			<label class="radio-inline label" ng-class="{'label-default': i.pct_fix == 1, 'label-info': i.pct_fix == 0}">
+		    	<input type="radio" ng-value="0" ng-model="i.pct_fix" ng-disabled="!i.fstate" />
 		    	Percent
 			</label>
 	    </div>
-	    <div class="col-md-2 col-lg-2">
-			<input type="number" class="form-control" ng-model="coupon[$index].cvalue" placeholder="0" ng-disabled="!i.state" />
+	    <div class="col-md-1 col-lg-1">
+			<input type="number" class="form-control" ng-model="coupon[$index].cvalue" placeholder="0" ng-disabled="!i.fstate" />
+	    </div>
+	    <div class="col-md-1 col-lg-1">
+			<input type="number" class="form-control" ng-model="coupon[$index].pts" placeholder="0" ng-disabled="!i.fstate" />
 	    </div>
 	    <div class="col-md-1 col-lg-1 btn-group">
-			<button type="button" class="btn btn-primary" tooltip="Edit" tooltip-placement="left" ng-show='i.state == false' ng-click="i.state = !i.state"><i class="fa fa-edit"></i></button>
-			<button type="button" class="btn btn-primary" tooltip="Save" tooltip-placement="left" ng-show='i.state == true' ng-click="saveCoupon($index)"><i class="fa fa-save"></i></button>
-			<button type="button" class="btn btn-primary" tooltip="Remove" tooltip-placement="left" ng-click="removeCoupon($index)"><i class="fa fa-trash-o"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Edit" tooltip-placement="left" ng-show='i.fstate == false' ng-click="i.fstate = !i.fstate"><i class="fa fa-fw fa-edit"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Save" tooltip-placement="left" ng-show='i.fstate == true' ng-click="saveCoupon($index)"><i class="fa fa-fw fa-check"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Remove" tooltip-placement="left" ng-show='i.fstate == false' ng-click="removeCoupon($index)"><i class="fa fa-fw fa-trash-o"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Cancel" tooltip-placement="left" ng-show='i.fstate == true' ng-click="i.fstate = !i.fstate"><i class="fa fa-fw fa-times"></i></button>
 		</div>
     </div>
 	<div class="form-group">
@@ -50,17 +57,20 @@
 			<input type="text" class="form-control" ng-model="c_item.description" placeholder="Coupon Description" />
 	    </div>
 	    <div class="col-md-2 col-lg-2 text-center">
-	 		<label class="radio-inline label" ng-class="{'label-default': c_item.pct_fix == 1, 'label-info': c_item.pct_fix == 0}">
-		    	<input type="radio" ng-model="c_item.pct_fix" value="0" />
-		    	Fixed
-			</label>
 			<label class="radio-inline label" ng-class="{'label-default': c_item.pct_fix == 0, 'label-info': c_item.pct_fix == 1}">
 				<input type="radio" ng-model="c_item.pct_fix" value="1" />
+		    	Fixed
+			</label>
+	 		<label class="radio-inline label" ng-class="{'label-default': c_item.pct_fix == 1, 'label-info': c_item.pct_fix == 0}">
+		    	<input type="radio" ng-model="c_item.pct_fix" value="0" />
 		    	Percent
 			</label>
 	    </div>
-	    <div class="col-md-2 col-lg-2">
+	    <div class="col-md-1 col-lg-1">
 			<input type="number" class="form-control" ng-model="c_item.cvalue" placeholder="0" />
+	    </div>
+	    <div class="col-md-1 col-lg-1">
+			<input type="number" class="form-control" ng-model="c_item.pts" placeholder="0" />
 	    </div>
 	    <div class="col-md-1 col-lg-1 btn-group">
 			<button type="button" class="btn btn-primary" tooltip="Add" tooltip-placement="left" ng-click="addCoupon()"><i class="fa fa-plus"></i></button>
