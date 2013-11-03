@@ -227,7 +227,6 @@ angular.module('myApp.controllers', [])
 				$scope.modalInstance.dismiss('cancel');
 			}
 			$scope.save = function() {
-				console.log($scope.tpasswd);
 				if ($scope.tpasswd.password1 != $scope.tpasswd.password2)
 					$scope.error = 'Passwords do not match';
 				else {
@@ -346,8 +345,10 @@ angular.module('myApp.controllers', [])
 			$scope.credentials.cart.showCart = true;
 			var idx = $filter('getById')($scope.menuitem, itemId);
 			var t_item = new MenuItem($scope.menuitem[idx]);
+			delete $scope.menuitem[idx].custom;
 			$scope.credentials.cart.items.push(t_item);
-			console.log($scope.credentials);
+			if ($scope.modalInstance != null)
+				$scope.modalInstance.close('success');
 		}
 		$scope.customizeItem = function(itemId) {
 			var idx = $filter('getById')($scope.menuitem, itemId);
