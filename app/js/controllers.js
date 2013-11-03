@@ -163,21 +163,38 @@ angular.module('myApp.controllers', [])
 		$scope.coupon = Coupon.query();
 		$scope.c_item = new Coupon;
 		$scope.c_item.pct_fix = '1';
-		$scope.saveCoupon = function(idx) {
+		$scope.saveCoupon = function(couponId) {
+			var idx = $filter('getById')($scope.coupon, couponId);
 			$scope.coupon[idx].fstate = false;
-			$scope.coupon[idx].$save();
-			$scope.coupon = Coupon.query();
+			var t_coupon = new Coupon($scope.coupon[idx]);
+			t_coupon.$save().then(function(){
+				var tc = Coupon.query(function(data){
+					$scope.coupon = data;					
+				})
+			})
 		}
-		$scope.removeCoupon = function(idx) {
-			$scope.coupon[idx].$remove();
-			$scope.menuitem = Coupon.query();
+		$scope.removeCoupon = function(couponId) {
+			var idx = $filter('getById')($scope.coupon, couponId);
+			var t_coupon = new Coupon($scope.coupon[idx]);
+			t_coupon.$remove().then(function(){
+				var tc = Coupon.query(function(data){
+					$scope.coupon = data;					
+				})
+			})
 		}
 		$scope.addCoupon = function() {
-			$scope.c_item.$create();
-			console.log($scope.c_item);
-			$scope.menuitem = Coupon.query();
-			$scope.c_item = new Coupon;
-			$scope.c_item.pct_fix = '0';
+			$scope.c_item.$create().then(function(){
+				var tc = Coupon.query(function(data){
+					$scope.coupon = data;					
+				})
+				$scope.c_item = new Coupon;
+				$scope.c_item.pct_fix = '1';
+			})
+		}
+		$scope.reloadCoupon = function(){
+			var tc = Coupon.query(function(data){
+				$scope.coupon = data;					
+			})
 		}
 	}])
 // Manager Account Controller

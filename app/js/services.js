@@ -110,8 +110,6 @@ angular.module('myApp.services', ['ngResource'])
 		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
 		    			var newdata = new Array();
 		    			newdata[0] = data;
-		    			console.log(data);
-		    			console.log(newdata);
 		    			return newdata;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -203,8 +201,6 @@ angular.module('myApp.services', ['ngResource'])
 						delete data.fstate;
 		    			var newdata = new Array();
 		    			newdata[0] = data;
-		    			console.log(data);
-		    			console.log(newdata);
 		    			return newdata;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -274,8 +270,6 @@ angular.module('myApp.services', ['ngResource'])
 		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			var newdata = new Array();
 		    			newdata[0] = data;
-		    			console.log(data);
-		    			console.log(newdata);
 		    			return newdata;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -341,8 +335,6 @@ angular.module('myApp.services', ['ngResource'])
 		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			var newdata = new Array();
 		    			newdata[0] = data;
-		    			console.log(data);
-		    			console.log(newdata);
 		    			return newdata;
 		    		}
 		    	].concat($http.defaults.transformRequest)

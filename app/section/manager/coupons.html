@@ -44,9 +44,9 @@
 	    </div>
 	    <div class="col-md-1 col-lg-1 btn-group">
 			<button type="button" class="btn btn-primary" tooltip="Edit" tooltip-placement="left" ng-show='i.fstate == false' ng-click="i.fstate = !i.fstate"><i class="fa fa-fw fa-edit"></i></button>
-			<button type="button" class="btn btn-primary" tooltip="Save" tooltip-placement="left" ng-show='i.fstate == true' ng-click="saveCoupon($index)"><i class="fa fa-fw fa-check"></i></button>
-			<button type="button" class="btn btn-primary" tooltip="Remove" tooltip-placement="left" ng-show='i.fstate == false' ng-click="removeCoupon($index)"><i class="fa fa-fw fa-trash-o"></i></button>
-			<button type="button" class="btn btn-primary" tooltip="Cancel" tooltip-placement="left" ng-show='i.fstate == true' ng-click="i.fstate = !i.fstate"><i class="fa fa-fw fa-times"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Save" tooltip-placement="left" ng-show='i.fstate == true' ng-click="saveCoupon(i.id)"><i class="fa fa-fw fa-check"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Remove" tooltip-placement="left" ng-show='i.fstate == false' ng-click="removeCoupon(i.id)"><i class="fa fa-fw fa-trash-o"></i></button>
+			<button type="button" class="btn btn-primary" tooltip="Cancel" tooltip-placement="left" ng-show='i.fstate == true' ng-click="reloadCoupon()"><i class="fa fa-fw fa-times"></i></button>
 		</div>
     </div>
 	<div class="form-group">
