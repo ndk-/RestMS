@@ -1,4 +1,7 @@
 <?php
+
+// Self-explanatory	
+	@date_default_timezone_set('UTC');
 // Destroy all previous session data
     $_SESSION = array();
     @setcookie(session_name(), '', time() - 45000); 
@@ -32,6 +35,7 @@
 
 // Otherwise, allow access
 	else {
+@		$stmt = $db->query("UPDATE access SET `last_time`='".date(c)."' WHERE id='".$result[0]['id']."'");
 	    session_start();
 	    $_SESSION[credentials]=$result[0];
 	    echo json_encode(array('success' => 'Login successful',
