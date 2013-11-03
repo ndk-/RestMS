@@ -53,8 +53,8 @@ angular.module('myApp.controllers', [])
 //		if ($scope.credentials == null || $scope.credentials.access != 3)
 //			$location.path('/login');
 		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id});
-		$scope.customer = new Customer;
-		$scope.credentials.customer = $scope.customer;
+		$scope.credentials.customer = new Customer();
+		$scope.customer = $scope.credentials.customer; 
 		$scope.Submit = function() {
 			$scope.customer.$getByEmail()
 				.then(function(data) {
@@ -62,14 +62,16 @@ angular.module('myApp.controllers', [])
 						$scope.customer.pts = 0;
 						$scope.customer.create_time = new Date().toJSON();
 						$scope.customer.last_time = new Date().toJSON();
-						$scope.customer.$create();
+						var t_item = new Customer($scope.customer);
+						t_item.$create();
 					}
 					else {
+						$scope.customer = data;
 						if ($scope.customer.id > 1)
 							$scope.customer.pts += 10;
 						$scope.customer.last_time = new Date().toJSON();
-						$scope.customer = data;
-						$scope.customer.$save();
+						var t_item = new Customer($scope.customer);
+						t_item.$save();
 					}
 					$location.path('/customer');
 				});
@@ -299,6 +301,7 @@ angular.module('myApp.controllers', [])
 		$scope.credentials.cart = Cart;
 		$scope.credentials.cart.items = new Array();
 		$scope.credentials.cart.showCart = false;
+		$scope.credentials.order = null;
 		$scope.section = 'menu';
 		$window.document.title = 'Our Restaurant';
 		$scope.callWaiter = function() {
@@ -347,8 +350,11 @@ angular.module('myApp.controllers', [])
 			var t_item = new MenuItem($scope.menuitem[idx]);
 			delete $scope.menuitem[idx].custom;
 			$scope.credentials.cart.items.push(t_item);
-			if ($scope.modalInstance != null)
+			if ($scope.modalInstance != null) {
+				console.log($scope.modalInstance);
 				$scope.modalInstance.close('success');
+				delete $scope.modalInstance;
+			}
 		}
 		$scope.customizeItem = function(itemId) {
 			var idx = $filter('getById')($scope.menuitem, itemId);
@@ -359,17 +365,42 @@ angular.module('myApp.controllers', [])
   			})
 			$scope.cancel = function(){
 				$scope.modalInstance.dismiss('cancel');
+				delete $scope.modalInstance;
 			}
 		}
     }])
     .controller('cCartCtrl', ['$scope', '$location', '$route',
-		'$window', '$modal', '$filter', function ($scope, 
-			$location, $route, $window, $modal,	$filter) {
-		$scope.cartTotal = function () {
+		'$window', '$modal', '$filter', 'Order', 
+		function ($scope, $location, $route, $window, $modal, 
+			$filter, Order) {
+		if ($scope.credentials.order == null)
+			$scope.credentials.order = new Order();
+		$scope.cartTotal = function() {
 			var len = $scope.credentials.cart.items.length;
 			var sum = 0;
 			for (var i=0;i<len;i++)
 				sum += parseFloat($scope.credentials.cart.items[i].price);
 			return sum.toFixed(2);
+		}
+		$scope.placeOrder = function() {
+			if ($scope.credentials.order.id == null) {
+				$scope.credentials.order.c_id = $scope.credentials.customer.id;
+				$scope.credentials.order.t_id = $scope.credentials.table.t_id;
+				$scope.credentials.order.w_id = $scope.credentials.table.w_id;
+				$scope.credentials.order.start_time = new Date().toJSON();
+				$scope.credentials.order.tips = 0;
+				$scope.credentials.order.paid = 0;
+				$scope.credentials.order.total = 0;
+				$scope.credentials.order.o_state = false;
+				$scope.credentials.order.r_state = false;
+				var t_item = new Order($scope.credentials.order);
+				t_item.$create().then(function(data){
+					$scope.credentials.order.id = data.success.id;
+					$scope.credentials.order.$get().then(function(data){
+						$scope.credentials.order = data;
+						console.log($scope.credentials);
+					})
+				});
+			};
 		}
     }])

@@ -299,7 +299,8 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-						data[0].pts = parseInt(data[0].pts);
+		    			if (data[0] != null)
+							data[0].pts = parseInt(data[0].pts);
 		    			return data[0];
 		    		}
 		    	]),
@@ -392,5 +393,79 @@ angular.module('myApp.services', ['ngResource'])
 		    		}
 		    	].concat($http.defaults.transformRequest)
 	    	},
+		})
+    }])
+    .factory('Order', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/orders/:cmd/:id', {}, {
+	    	get: {
+				method: 'GET',
+				params: {
+		    		id: '@id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+						data.tips = parseFloat(data.tips);
+						data.paid = parseFloat(data.paid);
+						data.total = parseFloat(data.total);
+		    			data.o_state = (data.o_state == "1") ? true : false;
+		    			data.r_state = (data.r_state == "1") ? true : false;
+		    			return data;
+		    		}
+		    	])
+	    	},
+	    	remove: {
+				method: 'DELETE',
+				params: {
+		    		id: '@id'
+		    	}
+	    	},
+	    	query: {
+				method: 'GET',
+				params: {
+		    		id: '@id' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			var len = data.length;
+		    			for (var i=0;i<len;i++) {
+							data[i].tips = parseFloat(data[i].tips);
+							data[i].paid = parseFloat(data[i].paid);
+							data[i].total = parseFloat(data[i].total);
+		    				data[i].o_state = (data[i].o_state == "1") ? true : false;
+		    				data[i].r_state = (data[i].r_state == "1") ? true : false;
+		    			}
+		    			return data;
+		    		}
+		    	]),
+				isArray: true
+	    	},
+	    	save: {
+	    		method: 'PUT',
+	    		params: {
+	    			id:	'@id'
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+	    				data.o_state = (data.o_state == true) ? "1" : "0";
+	    				data.r_state = (data.r_state == true) ? "1" : "0";
+		    			return data;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	},
+	    	create: {
+	    		method: 'POST',
+	    		params: {
+	    			id:	''
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+	    				data.o_state = (data.o_state == true) ? "1" : "0";
+	    				data.r_state = (data.r_state == true) ? "1" : "0";
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			return newdata;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	}
 		})
     }])

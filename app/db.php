@@ -357,12 +357,14 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 
 		else
 		{
+		$ourid = $result;
 			$result = array
 			(
 				'success' => array
 				(
 					'code' => 201,
 					'status' => 'Created',
+					'id' => $ourid
 				),
 			);
 		}
