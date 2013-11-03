@@ -294,7 +294,6 @@ angular.module('myApp.controllers', [])
 //	    	$location.path('/login');
 		$scope.customer = $scope.credentials.customer;
 		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id});
-		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id}); 
 		$scope.section = 'menu';
 		$window.document.title = 'Our Restaurant';
 		$scope.callWaiter = function() {
