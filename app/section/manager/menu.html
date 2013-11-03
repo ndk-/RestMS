@@ -1,25 +1,33 @@
-    <div class="menu panel color2 color2bord" ng-controller="mMenuCtrl">
+<div class="menu panel color2 color2bord" ng-controller="mMenuCtrl">
 	<ol class="breadcrumb color3">
-	    Categories:
-	    <li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'><a ng-click="mc.idx=$index">{{c.name}}</a></li>
+		Categories:
+		<li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'>
+			<a ng-click="mc.idx=$index">{{c.name}}</a>
+		</li>
 	</ol>
 	<div class="text-center">
-	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
-		<a ng-click="edit(i.id)" class="thumbnail">
-		    <img ng-src="img/{{i.picture}}" alt="image"></a>
-		<div class="ttitle">
-		    {{i.name}}</div>
-		<div class="btn-group-vertical cbtn">
-		    <button type="button" class="btn" tooltip="Edit" tooltip-placement="left" ng-click="editItem(i.id)"><i class="fa fa-fw fa-edit"></i></button>
-		    <button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)"><i class="fa fa-fw fa-eye-slash"></i></button>
-		    <button type="button" class="btn" tooltip="Remove" tooltip-placement="left" ng-click="removeItem(i.id)"><i class="fa fa-fw fa-trash-o"></i></button>
+		<div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
+			<a ng-click="edit(i.id)" class="thumbnail"> <img ng-src="img/{{i.picture}}" alt="image"></a>
+			<div class="ttitle">
+				{{i.name}}
+			</div>
+			<div class="btn-group-vertical cbtn">
+				<button type="button" class="btn" tooltip="Edit" tooltip-placement="left" ng-click="editItem(i.id)">
+					<i class="fa fa-fw fa-edit"></i>
+				</button>
+				<button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)">
+					<i class="fa fa-fw fa-eye-slash"></i>
+				</button>
+				<button type="button" class="btn" tooltip="Remove" tooltip-placement="left" ng-click="removeItem(i.id)">
+					<i class="fa fa-fw fa-trash-o"></i>
+				</button>
+			</div>
 		</div>
-	    </div>
-	    <div class="thumbwrap">
-		<a ng-click="addItem(mc.id)" class="thumbnail" tooltip="Add New Menu Item">
-			<img src="img/add.png" alt="image"></a>
-		<div class="ttitle">
-		    Add New Menu Item</div>
-	    </div>
+		<div class="thumbwrap">
+			<a ng-click="addItem(mc.id)" class="thumbnail" tooltip="Add New Menu Item"> <img src="img/add.png" alt="image"></a>
+			<div class="ttitle">
+				Add New Menu Item
+			</div>
+		</div>
 	</div>
-    </div>
+</div>

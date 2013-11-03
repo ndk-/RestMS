@@ -65,7 +65,8 @@ angular.module('myApp.controllers', [])
 						$scope.customer.$create();
 					}
 					else {
-						$scope.customer.pts += 10;
+						if ($scope.customer.id > 1)
+							$scope.customer.pts += 10;
 						$scope.customer.last_time = new Date().toJSON();
 						$scope.customer = data;
 						$scope.customer.$save();
@@ -286,14 +287,17 @@ angular.module('myApp.controllers', [])
 	}])
 // Main customer controller
     .controller('CustomerCtrl', ['$scope', '$location', '$route',
-		'$window', 'Credentials', 'TableStatus', function ( $scope,
-		$location, $route, $window, Credentials, TableStatus) {
+		'$window', 'Credentials', 'TableStatus', 'Cart', 
+		function( $scope, $location, $route, $window, 
+			Credentials, TableStatus, Cart) {
 		$scope.credentials = Credentials;
 // Authorization
 //		if ($scope.credentials == null || $scope.credentials.access != 0)
 //	    	$location.path('/login');
 		$scope.customer = $scope.credentials.customer;
 		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id});
+		$scope.credentials.cart = Cart;
+		$scope.credentials.cart.items = new Array();
 		$scope.section = 'menu';
 		$window.document.title = 'Our Restaurant';
 		$scope.callWaiter = function() {
@@ -323,9 +327,9 @@ angular.module('myApp.controllers', [])
     }])
 // Customer Menu controller
     .controller('cMenuCtrl', ['$scope', '$location', '$route',
-		'$window', '$modal', '$filter', 'MenuCategory','MenuItem', 
-		function ($scope, $location, $route, $window, $modal,
-			$filter, MenuCategory, MenuItem) {
+		'$window', '$modal', '$filter', 'MenuCategory','MenuItem',
+		function ($scope, $location, $route, $window, $modal, 
+			$filter, MenuCategory, MenuItem ) {
 		$window.document.title = 'Our Menu';
 		$scope.mc = new Object();
 		$scope.mc.idx = 0;
@@ -336,6 +340,12 @@ angular.module('myApp.controllers', [])
 	    	})
 		});
 		$scope.menuitem = MenuItem.cQuery();
+		$scope.addItem = function(itemId){
+			var idx = $filter('getById')($scope.menuitem, itemId);
+			var t_item = new MenuItem($scope.menuitem[idx]);
+			$scope.credentials.cart.items.push(t_item);
+			console.log($scope.credentials);
+		}
 		$scope.customizeItem = function(itemId) {
 			var idx = $filter('getById')($scope.menuitem, itemId);
 			$scope.t_item = $scope.menuitem[idx];

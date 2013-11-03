@@ -1,30 +1,40 @@
 <div class="container" ng-controller="CustomerCtrl">
-    <div class="navbar navbar-default navbar-nav navbar-fixed-top">
-	<div class="container">
-	    <div class="navbar-header">
-		<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
-	    </div>
-	    <div class="btn-group pull-right btn-navbar">
-	    	<button type="button" class="btn btn-primary" btn-checkbox ng-model="credentials.table.cw_state" ng-class="{'btn-info': credentials.table.cw_state}" ng-click="callWaiter()">
-	    		<i class="fa fa-phone"></i> Call a Waiter
-	    	</button>
-	    	<button type="button" class="btn btn-primary" btn-checkbox ng-model="order.r_state" ng-class="{'btn-info': order.r_state}">
-				<i class="fa fa-beer"></i> Request a Refill
-			</button>
-	    	<button type="button" class="btn btn-primary">
-				<i class="fa fa-sign-out"></i> Finish Dining
-			</button>
-	    </div>
-	    <div class="collapse navbar-collapse">
-		<ul class="nav navbar-nav">
-		    <li ng-class="{'active': section == 'menu'}"><a ng-click="section = 'menu'">Our Menu</a></li>
-		    <li ng-class="{'active': section == 'game'}"><a ng-click="section = 'game'">Play A Game</a></li>
-		    <li ng-class="{'active': section == 'chat'}"><a ng-click="section = 'chat'">Greet A Friend</a></li>
-		    <li ng-class="{'active': section == 'mycart'}"><a ng-click="section = 'mycart'">View My Cart</a></li>
-		    <li ng-class="{'active': section == 'bill'}"><a ng-click="section = 'bill'">Pay The Bill</a></li>
-		</ul>
-	    </div>
+	<div class="navbar navbar-default navbar-nav navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
+			</div>
+			<div class="btn-group pull-right btn-navbar">
+				<button type="button" class="btn btn-primary" btn-checkbox ng-model="credentials.table.cw_state" ng-class="{'btn-info': credentials.table.cw_state}" ng-click="callWaiter()">
+					<i class="fa fa-phone"></i> Call a Waiter
+				</button>
+				<button type="button" class="btn btn-primary" btn-checkbox ng-model="order.r_state" ng-class="{'btn-info': order.r_state}">
+					<i class="fa fa-beer"></i> Request a Refill
+				</button>
+				<button type="button" class="btn btn-primary">
+					<i class="fa fa-sign-out"></i> Finish Dining
+				</button>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li ng-class="{'active': section == 'menu'}">
+						<a ng-click="section = 'menu'">Our Menu</a>
+					</li>
+					<li ng-class="{'active': section == 'game'}">
+						<a ng-click="section = 'game'">Play A Game</a>
+					</li>
+					<li ng-class="{'active': section == 'chat'}">
+						<a ng-click="section = 'chat'">Greet A Friend</a>
+					</li>
+					<li ng-class="{'active': section == 'mycart'}">
+						<a ng-click="section = 'mycart'">View My Cart</a>
+					</li>
+					<li ng-class="{'active': section == 'bill'}">
+						<a ng-click="section = 'bill'">Pay The Bill</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
-    </div>
-    <ng-include src="'section/customer/'+section+'.html'"></ng-include>
+	<ng-include src="'section/customer/'+section+'.html'"></ng-include>
 </div>

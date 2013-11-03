@@ -1,38 +1,39 @@
 <div class="modal-header">
-    <button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
+	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">
+		&times;
+	</button>
 	<h4 class="modal-title">{{t_item.name}} : ${{t_item.price}}</h4>
 </div>
 <div class="modal-body">
 	<div class="imgdesc clearfix menuItem">
 		<img ng-src="img/{{t_item.picture}}" alt="{{t_item.name}}" class="pull-left" />
-		<span class="label label-success">
-			Description
-		</span>
+		<span class="label label-success"> Description </span>
 		<p class="menuItemDesc">
 			{{t_item.description}}
 		</p>
 		Calories:
-		<span class="label label-info">
-			{{t_item.calories}}
-		</span>
+		<span class="label label-info"> {{t_item.calories}} </span>
 	</div>
 	Allergy Information:
-	<span class="label label-warning">
-		{{t_item.allergy}}
-	</span>
+	<span class="label label-warning"> {{t_item.allergy}} </span>
 	&nbsp;Features:
 	<i class="fa fa-heart" ng-show="(t_item.calories < mc.heartyidx)" tooltip="Hearty"></i>
 	<i class="fa fa-fire" ng-show="t_item.spicy" tooltip="Spicy"></i>
 	<i class="fa fa-leaf" ng-show="t_item.vegetarian" tooltip="Vegetarian"></i>
 	<i class="fa fa-lemon-o" ng-show="t_item.gfree" tooltip="Gluten Free"></i>
-	<br /><br />
+	<br />
+	<br />
 	<form role="form" class="form">
-	<label for="mi_custom">Want to customize it ? Tell Us!</label>
-	<div class="form-group">
-	    <input type="text" class="form-control input-lg" placeholder="Write your preferences here" id="mi_custom" ng-model="t_item.custom" />
-	</div>
+		<label for="mi_custom">Want to customize it ? Tell Us!</label>
+		<div class="form-group">
+			<input type="text" class="form-control input-lg" placeholder="Write your preferences here" id="mi_custom" ng-model="t_item.custom" />
+		</div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary btn-lg" ng-click="addItem(t_item.id)"><i class="fa fa-plus"></i> Add To Cart</button>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="cancel()"><i class="fa fa-times"></i> Cancel</button>
+	<button type="button" class="btn btn-primary btn-lg" ng-click="addItem(t_item.id)">
+		<i class="fa fa-plus"></i> Add To Cart
+	</button>
+	<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()">
+		<i class="fa fa-times"></i> Cancel
+	</button>
 </div>
