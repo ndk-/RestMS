@@ -26,8 +26,8 @@
 					<li ng-class="{'active': section == 'chat'}">
 						<a ng-click="section = 'chat'">Greet A Friend</a>
 					</li>
-					<li ng-class="{'active': showCart}">
-						<a ng-click="showCart = !showCart">View My Cart</a>
+					<li ng-class="{'active': credentials.cart.showCart}">
+						<a ng-click="credentials.cart.showCart = !credentials.cart.showCart">View My Cart</a>
 					</li>
 					<li ng-class="{'active': section == 'bill'}">
 						<a ng-click="section = 'bill'">Pay The Bill</a>

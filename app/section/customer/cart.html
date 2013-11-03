@@ -1,4 +1,4 @@
-<div class="cart panel col-lg-4 col-md-4 color2bord" ng-controller="cCartCtrl" ng-show="showCart">
+<div class="cart panel col-lg-4 col-md-4 color2bord" ng-controller="cCartCtrl" ng-show="credentials.cart.showCart">
 	<form role="form" class="form-inline">
 		<div class="panel-heading">
 			My Cart
@@ -28,7 +28,7 @@
 				<tfoot>
 					<tr>
 						<th colspan="4">Total:</th>
-						<th>Calculate</th>
+						<th>{{cartTotal()}}</th>
 					</tr>
 				</tfoot>
 			</table>

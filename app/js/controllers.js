@@ -290,7 +290,7 @@ angular.module('myApp.controllers', [])
 		'$window', 'Credentials', 'TableStatus', 'Cart', 
 		function( $scope, $location, $route, $window, 
 			Credentials, TableStatus, Cart) {
-		$scope.showCart = false;
+		
 		$scope.credentials = Credentials;
 // Authorization
 //		if ($scope.credentials == null || $scope.credentials.access != 0)
@@ -299,6 +299,7 @@ angular.module('myApp.controllers', [])
 		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id});
 		$scope.credentials.cart = Cart;
 		$scope.credentials.cart.items = new Array();
+		$scope.credentials.cart.showCart = false;
 		$scope.section = 'menu';
 		$window.document.title = 'Our Restaurant';
 		$scope.callWaiter = function() {
@@ -342,6 +343,7 @@ angular.module('myApp.controllers', [])
 		});
 		$scope.menuitem = MenuItem.cQuery();
 		$scope.addItem = function(itemId){
+			$scope.credentials.cart.showCart = true;
 			var idx = $filter('getById')($scope.menuitem, itemId);
 			var t_item = new MenuItem($scope.menuitem[idx]);
 			$scope.credentials.cart.items.push(t_item);
@@ -362,7 +364,11 @@ angular.module('myApp.controllers', [])
     .controller('cCartCtrl', ['$scope', '$location', '$route',
 		'$window', '$modal', '$filter', function ($scope, 
 			$location, $route, $window, $modal,	$filter) {
-		$scope.itemRemove = function (idx) {
-			$scope.credentials.cart.items.splice(idx,1)
+		$scope.cartTotal = function () {
+			var len = $scope.credentials.cart.items.length;
+			var sum = 0;
+			for (var i=0;i<len;i++)
+				sum += parseFloat($scope.credentials.cart.items[i].price);
+			return sum.toFixed(2);
 		}
     }])
