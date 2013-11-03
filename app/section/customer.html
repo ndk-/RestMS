@@ -5,13 +5,13 @@
 		<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
 	    </div>
 	    <div class="btn-group pull-right btn-navbar">
-	    	<button type="button" class="btn btn-primary" btn-checkbox ng-model="customer.cw_state" ng-class="{'btn-info': customer.cw_state}">
+	    	<button type="button" class="btn btn-primary" btn-checkbox ng-model="credentials.table.cw_state" ng-class="{'btn-info': credentials.table.cw_state}" ng-click="callWaiter()">
 	    		<i class="fa fa-phone"></i> Call a Waiter
 	    	</button>
 	    	<button type="button" class="btn btn-primary" btn-checkbox ng-model="order.r_state" ng-class="{'btn-info': order.r_state}">
 				<i class="fa fa-beer"></i> Request a Refill
 			</button>
-	    	<button type="button" class="btn btn-primary" ng-click="#/table">
+	    	<button type="button" class="btn btn-primary">
 				<i class="fa fa-sign-out"></i> Finish Dining
 			</button>
 	    </div>

@@ -35,7 +35,8 @@
 	    session_start();
 	    $_SESSION[credentials]=$result[0];
 	    echo json_encode(array('success' => 'Login successful',
-				   'access' => $result[0]['a_lvl']));
+				   'access' => $result[0]['a_lvl'],
+				   'id' => $result[0]['id']));
 	}
     }
     else {

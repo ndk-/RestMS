@@ -6,7 +6,7 @@
 	<div class="text-center">
 	    <div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
 		<a ng-click="edit(i.id)" class="thumbnail">
-		    <img src="img/{{i.picture}}" alt="image"></a>
+		    <img ng-src="img/{{i.picture}}" alt="image"></a>
 		<div class="ttitle">
 		    {{i.name}}</div>
 		<div class="btn-group-vertical cbtn">

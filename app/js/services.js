@@ -19,6 +19,18 @@ angular.module('myApp.services', ['ngResource'])
     	var credentials = new Object();
     	return credentials;
     }])
+    .factory('Order',[ '$http', '$resource',function ($http, $resource){
+    	var order = new Object();
+    	return order;
+    }])
+    .factory('Cart',[ '$http', '$resource',function ($http, $resource){
+    	var cart = new Object();
+    	return cart;
+    }])
+    .factory('Table',[ '$http', '$resource',function ($http, $resource){
+    	var table = new Object();
+    	return table;
+    }])
 // Menu items service    
     .factory('MenuItem', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/menuitem/:cmd/:id', {}, {
@@ -232,16 +244,11 @@ angular.module('myApp.services', ['ngResource'])
 				params: {
 		    		id: '@id' 
 		    	},
-		    	transformResponse: $http.defaults.transformResponse.concat([
+/*		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-/*		    			var len = data.length;
-		    			for (var i=0;i<len;i++) {
-							data[i].cvalue = parseFloat(data[i].cvalue);
-		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
-		    			} */
 		    			return data;
 		    		}
-		    	]),
+		    	]), */
 				isArray: true
 	    	},
 	    	save: {
@@ -249,30 +256,24 @@ angular.module('myApp.services', ['ngResource'])
 	    		params: {
 	    			id:	'@id'
 	    		},
-		    	transformRequest: [
+/*		    	transformRequest: [
 		    		function (data, headersSetter) {
-/*		    			data.type = (data.type == true) ? "1" : "0";
-						data[i].type = parseInt(data[i].type);
-		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			return data;
 		    		}
-		    	].concat($http.defaults.transformRequest)
+		    	].concat($http.defaults.transformRequest) */
 	    	},
 	    	create: {
 	    		method: 'POST',
 	    		params: {
 	    			id:	''
 	    		},
-		    	transformRequest: [
+/*		    	transformRequest: [
 		    		function (data, headersSetter) {
-/*		    			data.type = (data.type == true) ? "1" : "0";
-						data.type = parseInt(data.type);
-		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			return newdata;
 		    		}
-		    	].concat($http.defaults.transformRequest)
+		    	].concat($http.defaults.transformRequest)*/
 	    	}
 		})
     }])
@@ -284,11 +285,11 @@ angular.module('myApp.services', ['ngResource'])
 					cmd: '',
 		    		id: '@id'
 		    	},
-		    	transformResponse: $http.defaults.transformResponse.concat([
+/*		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
 		    			return data;
 		    		}
-		    	]),
+		    	]), */
 	    	},
 	    	getByEmail: {
 				method: 'GET',
@@ -314,31 +315,82 @@ angular.module('myApp.services', ['ngResource'])
 	    		params: {
 	    			id:	'@id'
 	    		},
-		    	transformRequest: [
+/*		    	transformRequest: [
 		    		function (data, headersSetter) {
-/*		    			data.type = (data.type == true) ? "1" : "0";
-						data[i].type = parseInt(data[i].type);
-		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			return data;
 		    		}
-		    	].concat($http.defaults.transformRequest)
+		    	].concat($http.defaults.transformRequest)*/
 	    	},
 	    	create: {
 	    		method: 'POST',
 	    		params: {
 	    			id:	''
 	    		},
-		    	transformRequest: [
+/*		    	transformRequest: [
 		    		function (data, headersSetter) {
-/*		    			data.type = (data.type == true) ? "1" : "0";
-						data.type = parseInt(data.type);
-		    			data.state = (data.state == true) ? "1" : "0"; */
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			return newdata;
 		    		}
-		    	].concat($http.defaults.transformRequest)
+		    	].concat($http.defaults.transformRequest)*/
 	    	}
 		})
-    }]);
-
+    }])
+    .factory('TableStatus', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/waiterxtable/:cmd/:id', {}, {
+	    	get: {
+				method: 'GET',
+				params: {
+					cmd: '',
+		    		id: '@id'
+		    	},
+/*		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			return data;
+		    		}
+		    	]), */
+	    	},
+	    	getByTable: {
+				method: 'GET',
+				params: {
+					cmd: 't_id',
+		    		id: '@t_id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+						data[0].cw_state = ((data[0].cw_state == "1") ? true : false);
+						data[0].t_state = ((data[0].t_state == "1") ? true : false); // free/occupied ?
+		    			return data[0];
+		    		}
+		    	]),
+	    	},
+	    	getByWaiter: {
+				method: 'GET',
+				params: {
+					cmd: 'w_id',
+		    		id: '@w_id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+						data[0].cw_state = ((data[0].cw_state == "1") ? true : false);
+						data[0].t_state = ((data[0].t_state == "1") ? true : false); // free/occupied ?
+		    			return data[0];
+		    		}
+		    	]),
+	    	},
+	    	save: {
+	    		method: 'PUT',
+	    		params: {
+	    			cmd: '',
+	    			id:	'@id'
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+						data.cw_state = ((data.cw_state == true) ? "1" : "0");
+						data.t_state = ((data.t_state == true) ? "1" : "0"); // free/occupied ?
+		    			return data;
+		    		}
+		    	].concat($http.defaults.transformRequest)
+	    	},
+		})
+    }])
