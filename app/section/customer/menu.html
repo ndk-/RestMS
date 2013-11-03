@@ -1,4 +1,4 @@
-<div class="menu panel color2 color2bord" ng-controller="cMenuCtrl">
+<div class="menu panel color2 color2bord" ng-controller="cMenuCtrl" ng-class="{'col-lg-8 col-md-8': showCart}">
 	<ol class="breadcrumb color3">
 		Categories:
 		<li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'>

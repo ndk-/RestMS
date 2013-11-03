@@ -290,6 +290,7 @@ angular.module('myApp.controllers', [])
 		'$window', 'Credentials', 'TableStatus', 'Cart', 
 		function( $scope, $location, $route, $window, 
 			Credentials, TableStatus, Cart) {
+		$scope.showCart = false;
 		$scope.credentials = Credentials;
 // Authorization
 //		if ($scope.credentials == null || $scope.credentials.access != 0)
@@ -356,5 +357,12 @@ angular.module('myApp.controllers', [])
 			$scope.cancel = function(){
 				$scope.modalInstance.dismiss('cancel');
 			}
+		}
+    }])
+    .controller('cCartCtrl', ['$scope', '$location', '$route',
+		'$window', '$modal', '$filter', function ($scope, 
+			$location, $route, $window, $modal,	$filter) {
+		$scope.itemRemove = function (idx) {
+			$scope.credentials.cart.items.splice(idx,1)
 		}
     }])

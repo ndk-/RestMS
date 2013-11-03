@@ -26,8 +26,8 @@
 					<li ng-class="{'active': section == 'chat'}">
 						<a ng-click="section = 'chat'">Greet A Friend</a>
 					</li>
-					<li ng-class="{'active': section == 'mycart'}">
-						<a ng-click="section = 'mycart'">View My Cart</a>
+					<li ng-class="{'active': showCart}">
+						<a ng-click="showCart = !showCart">View My Cart</a>
 					</li>
 					<li ng-class="{'active': section == 'bill'}">
 						<a ng-click="section = 'bill'">Pay The Bill</a>
@@ -37,4 +37,5 @@
 		</div>
 	</div>
 	<ng-include src="'section/customer/'+section+'.html'"></ng-include>
+	<ng-include src="'section/customer/cart.html'"></ng-include>
 </div>
