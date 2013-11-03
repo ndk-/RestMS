@@ -17,7 +17,7 @@ angular.module('myApp.filters', [])
 			var len = input.length;
 			for(var i=0;i<len;i++) {
 				if(+input[i].id == +id) {
-					return input[i];
+					return i;
 				}
 			}
 			return null;

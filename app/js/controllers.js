@@ -5,20 +5,22 @@
 angular.module('myApp.controllers', [])
 // Login controller
     .controller('LoginCtrl', ['$scope', '$http', '$location', '$route',
-		    '$window', '$rootScope', function($scope, $http, $location,
-			    $route, $window, $rootScope) {
+		    '$window', 'Credentials', function($scope, $http, $location,
+			    $route, $window, Credentials) {
 		$window.document.title = 'Login';
+		$scope.credentials = Credentials;
 		$scope.Submit = function() {
 			var credentials = {
 		    	'username' : $scope.username,
 		    	'password' : CryptoJS.SHA256($scope.password)
 				    .toString(CryptoJS.enc.Hex)
 			};
-			$http.post('login.php', credentials, $rootScope)
+			$http.post('login.php', credentials)
 		    	.success(function(data, status, header, config) {
 				$scope.error = "";
-				$rootScope.access = parseInt(data.access);
-				switch($rootScope.access) {
+				$scope.credentials.access = parseInt(data.access);
+				$scope.credentials.username = $scope.username;
+				switch($scope.credentials.access) {
 			    	case 0:
 						$location.path('/manager');
 						break;
@@ -41,10 +43,15 @@ angular.module('myApp.controllers', [])
     }])
 // Table login controller
     .controller('TableLoginCtrl', ['$scope', '$http', '$location', '$route',
-		    '$window', '$rootScope', 'Customer', function($scope, $http,
-		    	$location,$route, $window, $rootScope, Customer) {
+		    '$window', 'Customer', 'Credentials', function($scope, $http,
+		    	$location,$route, $window, Customer, Credentials) {
 		$window.document.title = 'Welcome To Our Restaurant!';
+		$scope.credentials = Credentials;
+// Authorization
+//		if ($scope.credentials == null || $scope.credentials.access != 3)
+//			$location.path('/login');
 		$scope.customer = new Customer;
+		$scope.credentials.customer = $scope.customer;
 		$scope.Submit = function() {
 			$scope.customer.$getByEmail()
 				.then(function(data) {
@@ -57,7 +64,7 @@ angular.module('myApp.controllers', [])
 					else {
 						$scope.customer.pts += 10;
 						$scope.customer.last_time = new Date().toJSON();
-						$rootScope.customer = data;
+						$scope.customer = data;
 						$scope.customer.$save();
 					}
 					$location.path('/customer');
@@ -65,13 +72,15 @@ angular.module('myApp.controllers', [])
 		}
 	}])
 // Initial manager controller
-    .controller('ManagerCtrl', ['$rootScope', '$scope', '$location', '$route',
-		'$window', function ($rootScope, $scope, $location, $route,
-		$window) {
-//	if ($rootScope.access == null)
-//	    $location.path('/login');
-		$rootScope.section = 'menu';
+    .controller('ManagerCtrl', ['$scope', '$location', '$route', '$window',
+    'Credentials', function ($scope, $location, $route, $window, Credentials) {
+		$scope.credentials = Credentials;
+		$scope.menuitem = null;
+// Authorization
+//		if ($scope.credentials == null || $scope.credentials.access != 0)
+//	    	$location.path('/login');
 		$window.document.title = 'Manager Section';
+		$scope.section = 'menu';
     }])
 // manager Menu Controller
     .controller('mMenuCtrl', ['$scope', '$location', '$route', '$window',
@@ -87,43 +96,36 @@ angular.module('myApp.controllers', [])
 		});
 		
 		$scope.menuitem = MenuItem.query();
-		$scope.modalInstance = null;
 
-		$scope.editItem = function (idx) {
-			$scope.t_item = $filter('getById')($scope.menuitem, idx);
-	    	if ($scope.t_item != null) {
-				$scope.modalInstance = $modal.open({
-    		    	templateUrl: 'section/manager/menuedit.html',
-//		    		controller: 'modalInstanceCtrl',
-		    		scope: $scope,
-//		    		resolve: {
-//						items: function () {
-//        		    		return $scope.t_item;
-//    					}
-//    		   		}
-  				});
-				$scope.cancel = function(){
-					$scope.modalInstance.dismiss('cancel');
-				}
-				$scope.save = function() {
-					$scope.tid = $scope.t_item.id;
-					$scope.t_item.$save();
-					console.log($scope.t_item);
-					$scope.menuitem = MenuItem.query();
-					$scope.modalInstance.close('success');
-				}
+		$scope.editItem = function (itemId) {
+			$scope.idx = $filter('getById')($scope.menuitem, itemId);
+			$scope.t_item = $scope.menuitem[$scope.idx];
+			$scope.modalInstance = $modal.open({
+    		   	templateUrl: 'section/manager/menuedit.html',
+		    	scope: $scope,
+  			});
+			$scope.cancel = function(){
+				$scope.modalInstance.dismiss('cancel');
+			}
+			$scope.save = function() {
+				$scope.modalInstance.close('success');
+				var titem = new MenuItem($scope.t_item);
+				titem.$save().then(function(){
+					var tmi = MenuItem.query(function(data){
+						$scope.menuitem = data;
+					});
+				});
 			}
 		};
-// The disable button issue		
-		$scope.disableItem = function (idx) {
-			$scope.t_item = $filter('getById')($scope.menuitem, idx);
-	    	if ($scope.t_item != null) {
-	    		$scope.t_item.state = !($scope.t_item.state);
-				$scope.t_item.$save();
-//				$scope.t_item.$get({id:$scope.tid});
-				$scope.menuitem = MenuItem.query();
-				console.log($scope.menuitem);
-			}
+		$scope.disableItem = function (itemId) {
+			var idx = $filter('getById')($scope.menuitem, itemId);
+    		$scope.menuitem[idx].state = !($scope.menuitem[idx].state);
+			var t_item = new MenuItem($scope.menuitem[idx]);
+			t_item.$save().then(function(){
+				var tmi = MenuItem.query(function(data){
+					$scope.menuitem = data;
+				})
+			});
 		}
 		$scope.addItem = function(idx) {
 			$scope.t_item = new MenuItem;
@@ -136,15 +138,22 @@ angular.module('myApp.controllers', [])
 				$scope.modalInstance.dismiss('cancel');
 			}
 			$scope.save = function() {
-				$scope.t_item.$create();
-				$scope.menuitem = MenuItem.query();
+				$scope.t_item.$create().then(function(){
+					var tmi = MenuItem.query(function(data){
+						$scope.menuitem = data;
+					})
+				});
 				$scope.modalInstance.close('success');
 			}
 		}
-		$scope.removeItem = function(idx) {
-			$scope.t_item = $filter('getById')($scope.menuitem, idx);
-			$scope.t_item.$remove();
-			$scope.menuitem = MenuItem.query();
+		$scope.removeItem = function(itemId) {
+			var idx = $filter('getById')($scope.menuitem, itemId);
+			var t_item = new MenuItem($scope.menuitem[idx]);
+			t_item.$remove().then(function(){
+				var tmi = MenuItem.query(function(data){
+					$scope.menuitem = data;
+				})
+			})
 		}
 	}])
 // Manager Coupon controller
@@ -228,21 +237,25 @@ angular.module('myApp.controllers', [])
 			$scope.c_item.pct_fix = '0';
 		}
 	}])
-    .controller('CustomerCtrl', ['$rootScope', '$scope', '$location', '$route',
-		'$window', function ($rootScope, $scope, $location, $route,
-		$window) {
-		$scope.name = $rootScope.customer.name;
+// Main customer controller
+    .controller('CustomerCtrl', ['$scope', '$location', '$route',
+		'$window', 'Credentials', function ( $scope, $location,
+		$route,	$window, Credentials) {
+		$scope.credentials = Credentials;
+		$scope.customer = $scope.credentials.customer;
+//		$scope.name = $rootScope.customer.name;
 //	if ($rootScope.access == null)
 //	    $location.path('/login');
 		$scope.section = 'menu';
 		$window.document.title = 'Our Restaurant';
     }])
-    .controller('cMenuCtrl', ['$rootScope', '$scope', '$location', '$route',
+// Customer Menu controller
+    .controller('cMenuCtrl', ['$scope', '$location', '$route',
 		'$window', '$modal', '$filter', 'MenuCategory','MenuItem', 
-		function ($rootScope, $scope, $location, $route, $window, $modal,
+		function ($scope, $location, $route, $window, $modal,
 			$filter, MenuCategory, MenuItem) {
 		$window.document.title = 'Our Menu';
-		$scope.customer = $rootScope.customer;
+		console.log($scope.customer);
 		$scope.mc = new Object();
 		$scope.mc.idx = 0;
 		$scope.menucategory = MenuCategory.query(function () {

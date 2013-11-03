@@ -14,6 +14,11 @@ angular.module('myApp.services', ['ngResource'])
 	    }
 	})
     }])
+// Storing user data    
+    .factory('Credentials', [ '$http', '$resource', function ($http, $resource) {
+    	var credentials = new Object();
+    	return credentials;
+    }])
 // Menu items service    
     .factory('MenuItem', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/menuitem/:cmd/:id', {}, {
