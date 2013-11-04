@@ -1,5 +1,22 @@
-medium priority
+done
 * screen update issue
-low priority
-* https://github.com/nervgh/angular-file-upload
+
+high priority
+* add price to ordereditem table
+* add order
+* add payment page
+* add kitchen section
+* add waiter section
+* finish game tab in manager section
+
+medium priority
+* add game
+* add chat
 * input check
+* https://github.com/nervgh/angular-file-upload
+
+low priority
+* add comments
+* code clean-up
+* cookies for page refresh support
+* remove cryptoJS (not working on android)

@@ -469,3 +469,85 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+    .factory('oMenuItem', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/ordereditem/:cmd/:id', {}, {
+	    	get: {
+				method: 'GET',
+				params: {
+		    		id: '@id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+						data.state = parseInt(data.state);
+		    			return data;
+		    		}
+		    	])
+	    	},
+	    	remove: {
+				method: 'DELETE',
+				params: {
+		    		id: '@id'
+		    	}
+	    	},
+	    	query: {
+				method: 'GET',
+				params: {
+		    		id: '@id' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			var len = data.length;
+		    			for (var i=0;i<len;i++) {
+							data[i].state = parseInt(data[i].state);
+		    			}
+		    			return data;
+		    		}
+		    	]),
+				isArray: true
+	    	},
+	    	cQuery: {
+				method: 'GET',
+				params: {
+					cmd: 'o_id',
+		    		id: '@o_id' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			var len = data.length;
+		    			for (var i=0;i<len;i++) {
+							data[i].state = parseInt(data[i].state);
+		    			}
+		    			return data;
+		    		}
+		    	]),
+				isArray: true
+	    	},
+	    	save: {
+	    		method: 'PUT',
+	    		params: {
+	    			id:	'@id'
+	    		},
+/*		    	transformRequest: [
+		    		function (data, headersSetter) {
+		    			return data;
+		    		}
+		    	].concat($http.defaults.transformRequest) */
+	    	},
+	    	create: {
+	    		method: 'POST',
+	    		params: {
+	    			id:	''
+	    		},
+	    		isArray: true
+/*		    	transformRequest: [
+		    		function (data, headersSetter) {
+	    				data.o_state = (data.o_state == true) ? "1" : "0";
+	    				data.r_state = (data.r_state == true) ? "1" : "0";
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			return newdata;
+		    		}
+		    	].concat($http.defaults.transformRequest) */
+	    	}
+		})
+    }])

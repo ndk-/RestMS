@@ -7,8 +7,13 @@
     @setcookie(session_name(), '', time() - 45000); 
     @session_destroy();
 
-// Get JSON data
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Content-Type: application/json');
+
+	// Get JSON data
     $data = json_decode(file_get_contents('php://input'), true);
+	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-1', print_r($_SERVER, true));
+	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-2', print_r($data, true));
 
 // Connect to DB if data has username and encoded password
     if ($data[username] != '' && $data[password] !='') {

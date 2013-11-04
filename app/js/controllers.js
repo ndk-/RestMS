@@ -333,7 +333,7 @@ angular.module('myApp.controllers', [])
     .controller('cMenuCtrl', ['$scope', '$location', '$route',
 		'$window', '$modal', '$filter', 'MenuCategory','MenuItem',
 		function ($scope, $location, $route, $window, $modal, 
-			$filter, MenuCategory, MenuItem ) {
+			$filter, MenuCategory, MenuItem) {
 		$window.document.title = 'Our Menu';
 		$scope.mc = new Object();
 		$scope.mc.idx = 0;
@@ -370,9 +370,9 @@ angular.module('myApp.controllers', [])
 		}
     }])
     .controller('cCartCtrl', ['$scope', '$location', '$route',
-		'$window', '$modal', '$filter', 'Order', 
+		'$window', '$modal', '$filter', 'Order', 'oMenuItem', 
 		function ($scope, $location, $route, $window, $modal, 
-			$filter, Order) {
+			$filter, Order, oMenuItem) {
 		if ($scope.credentials.order == null)
 			$scope.credentials.order = new Order();
 		$scope.cartTotal = function() {
@@ -398,9 +398,22 @@ angular.module('myApp.controllers', [])
 					$scope.credentials.order.id = data.success.id;
 					$scope.credentials.order.$get().then(function(data){
 						$scope.credentials.order = data;
-						console.log($scope.credentials);
 					})
-				});
-			};
+				})
+			}
+			var len = $scope.credentials.cart.items.length;
+			$scope.credentials.order.items = new Array();
+			for (var i=0;i<len;i++) {
+				$scope.credentials.order.items[i] = new oMenuItem();
+				$scope.credentials.order.items[i].o_id = $scope.credentials.order.id;
+				$scope.credentials.order.items[i].mi_id = $scope.credentials.cart.items[i].id;
+				$scope.credentials.order.items[i].state = 0;
+				if ($scope.credentials.cart.items[i].custom != null)
+					$scope.credentials.order.items[i].custom = $scope.credentials.cart.items[i].custom;
+			}
+			console.log($scope.credentials.order.items);
+			oMenuItem.create($scope.credentials.order.items); //.create()//.then(function(data){
+//				console.log(data);
+//			})
 		}
     }])
