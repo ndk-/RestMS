@@ -211,13 +211,15 @@
 
 // Extra small screen / phone
 // Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
-@screen-xs:                  480px;
+//@screen-xs:                  480px;
+@screen-xs:                  9999px;
 @screen-xs-min:              @screen-xs;
 @screen-phone:               @screen-xs-min;
 
 // Small screen / tablet
 // Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
-@screen-sm:                  768px;
+//@screen-sm:                  768px;
+@screen-sm:                  9999px;
 @screen-sm-min:              @screen-sm;
 @screen-tablet:              @screen-sm-min;
 
@@ -248,6 +250,7 @@
 @grid-gutter-width:         30px;
 // Point at which the navbar stops collapsing
 @grid-float-breakpoint:     @screen-sm-min;
+@grid-float-breakpoint:     1px;
 
 
 // Navbar
