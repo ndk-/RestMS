@@ -3,10 +3,10 @@
 
 //$requestBody = file_get_contents('php://input');
 //@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp', print_r($requestBody, true));
-@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp1', print_r($_SERVER, true));
+@file_put_contents('/home/dn0086/public_html/RestMS/tmp/server', print_r($_SERVER, true));
 
 
-$dsn = 'mysql://dn0086:csce4444p@student-db/dn0086/';
+$dsn = 'mysql://dn0086:*@student-db/dn0086/';
 $clients = array
 (
 );
@@ -285,6 +285,8 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 	{
 		$queries = array();
 
+		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/post', print_r($_POST, true));
+
 		if (count($_POST) == count($_POST, COUNT_RECURSIVE))
 		{
 			$_POST = array($_POST);
@@ -315,10 +317,9 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 				sprintf('%s;', implode(' ', $query)),
 				$adata,
 			);
-			@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp2', print_r($queries, true));
 		}
 
-		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp3', print_r($queries, true));
+		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/queries', print_r($queries, true));
 
 		if (count($queries) > 1)
 		{
@@ -332,7 +333,7 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 				}
 			}
 
-			if (($result !== false) && (ArrestDB::Query()->inTransaction() === true))
+			if ($result !== false)// && (ArrestDB::Query()->inTransaction() === true))
 			{
 				$result = ArrestDB::Query()->commit();
 			}
@@ -405,6 +406,9 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 			sprintf('UPDATE `%s` SET %s WHERE `%s` = %s', $table, implode(', ', $data), 'id', $id),
 		);
 
+		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/put', print_r($query, true));
+		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/put', print_r($adata, true), FILE_APPEND);
+		
 		$query = sprintf('%s;', implode(' ', $query));
 		$result = ArrestDB::Query($query, $adata);
 		if ($result === false)

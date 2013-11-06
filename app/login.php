@@ -12,15 +12,15 @@
 
 	// Get JSON data
     $data = json_decode(file_get_contents('php://input'), true);
-	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-1', print_r($_SERVER, true));
-	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-2', print_r($data, true));
+//	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-1', print_r($_SERVER, true));
+//	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-2', print_r($data, true));
 
 // Connect to DB if data has username and encoded password
     if ($data[username] != '' && $data[password] !='') {
 
 // Try connect to DB
 	try {
-@	    $db = new PDO('mysql:host=student-db.cse.unt.edu;dbname=dn0086', 'dn0086', 'csce4444p');
+@	    $db = new PDO('mysql:host=student-db;dbname=dn0086', 'dn0086', '*');
 @	    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 @	    $stmt = $db->query("SELECT * FROM access WHERE username='".$data[username]."' AND password='".$data[password]."'");
 @	    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

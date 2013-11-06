@@ -8,7 +8,7 @@
 				<button type="button" class="btn btn-primary" btn-checkbox ng-model="credentials.table.cw_state" ng-class="{'btn-info': credentials.table.cw_state}" ng-click="callWaiter()">
 					<i class="fa fa-phone"></i> Call a Waiter
 				</button>
-				<button type="button" class="btn btn-primary" btn-checkbox ng-model="order.r_state" ng-class="{'btn-info': order.r_state}">
+				<button type="button" class="btn btn-primary" ng-class="{'btn-info active': credentials.order.r_state}" ng-click="requestRefill()">
 					<i class="fa fa-beer"></i> Request a Refill
 				</button>
 				<button type="button" class="btn btn-primary">
@@ -27,7 +27,7 @@
 						<a ng-click="section = 'chat'">Greet A Friend</a>
 					</li>
 					<li ng-class="{'active': credentials.cart.showCart}">
-						<a ng-click="credentials.cart.showCart = !credentials.cart.showCart">View My Cart</a>
+						<a ng-click="credentials.cart.showCart = !credentials.cart.showCart">View My Cart&nbsp;&nbsp;<span class="label label-info">{{credentials.cart.items.length}}</span></a>
 					</li>
 					<li ng-class="{'active': section == 'bill'}">
 						<a ng-click="section = 'bill'">Pay The Bill</a>

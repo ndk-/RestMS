@@ -5,6 +5,9 @@
 			<a ng-click="mc.idx=$index">{{c.name}}</a>
 		</li>
 	</ol>
+	<alert ng-repeat="a in credentials.alerts" type="a.type" close="alertClose($index)">
+		{{a.msg}}
+	</alert>
 	<div class="text-center">
 		<div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
 			<a ng-click="customizeItem(i.id)" class="thumbnail"> <img ng-src="img/{{i.picture}}" alt="image"></a>

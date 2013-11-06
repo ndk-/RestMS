@@ -12,8 +12,7 @@ angular.module('myApp.controllers', [])
 		$scope.Submit = function() {
 			var credentials = {
 		    	'username' : $scope.username,
-		    	'password' : CryptoJS.SHA256($scope.password)
-				    .toString(CryptoJS.enc.Hex)
+		    	'password' : $scope.password
 			};
 			$http.post('login.php', credentials)
 		    	.success(function(data, status, header, config) {
@@ -112,6 +111,10 @@ angular.module('myApp.controllers', [])
 		
 		$scope.menuitem = MenuItem.query();
 
+		$scope.cancel = function(){
+			$scope.modalInstance.dismiss('cancel');
+		}
+
 		$scope.editItem = function (itemId) {
 			$scope.idx = $filter('getById')($scope.menuitem, itemId);
 			$scope.t_item = $scope.menuitem[$scope.idx];
@@ -119,17 +122,14 @@ angular.module('myApp.controllers', [])
     		   	templateUrl: 'section/manager/menuedit.html',
 		    	scope: $scope,
   			});
-			$scope.cancel = function(){
-				$scope.modalInstance.dismiss('cancel');
-			}
-			$scope.save = function() {
-				$scope.modalInstance.close('success');
+			$scope.saveItem = function() {
 				var titem = new MenuItem($scope.t_item);
 				titem.$save().then(function(){
 					var tmi = MenuItem.query(function(data){
 						$scope.menuitem = data;
 					});
 				});
+				$scope.modalInstance.close('success');
 			}
 		};
 		$scope.disableItem = function (itemId) {
@@ -149,10 +149,7 @@ angular.module('myApp.controllers', [])
   		    	templateUrl: 'section/manager/menuedit.html',
 		    		scope: $scope,
   			});
-			$scope.cancel = function(){
-				$scope.modalInstance.dismiss('cancel');
-			}
-			$scope.save = function() {
+			$scope.saveItem = function() {
 				$scope.t_item.$create().then(function(){
 					var tmi = MenuItem.query(function(data){
 						$scope.menuitem = data;
@@ -228,14 +225,12 @@ angular.module('myApp.controllers', [])
 			$scope.cancel = function(){
 				$scope.modalInstance.dismiss('cancel');
 			}
-			$scope.save = function() {
+			$scope.savePasswd = function() {
 				if ($scope.tpasswd.password1 != $scope.tpasswd.password2)
 					$scope.error = 'Passwords do not match';
 				else {
 					$scope.modalInstance.close('success');
-					$scope.account[idx].password = CryptoJS.SHA256(
-						$scope.tpasswd.password1)
-							.toString(CryptoJS.enc.Hex);
+					$scope.account[idx].password = $scope.tpasswd.password1;
 					$scope.account[idx].$save().then(function(){
 						$scope.account = Account.query();
 					})
@@ -288,9 +283,9 @@ angular.module('myApp.controllers', [])
 	}])
 // Main customer controller
     .controller('CustomerCtrl', ['$scope', '$location', '$route',
-		'$window', 'Credentials', 'TableStatus', 'Cart', 
+		'$window', 'Credentials', 'TableStatus', 'Cart', 'Order',
 		function( $scope, $location, $route, $window, 
-			Credentials, TableStatus, Cart) {
+			Credentials, TableStatus, Cart, Order) {
 		
 		$scope.credentials = Credentials;
 // Authorization
@@ -300,6 +295,7 @@ angular.module('myApp.controllers', [])
 		$scope.credentials.table = TableStatus.getByTable({id: $scope.credentials.id});
 		$scope.credentials.cart = Cart;
 		$scope.credentials.cart.items = new Array();
+		$scope.credentials.alerts = new Array();
 		$scope.credentials.cart.showCart = false;
 		$scope.credentials.order = null;
 		$scope.section = 'menu';
@@ -313,8 +309,25 @@ angular.module('myApp.controllers', [])
 				})
 			})
 		}
+		$scope.requestRefill = function () {
+			if ($scope.credentials.can_refill) {
+				$scope.credentials.order.r_state = !$scope.credentials.order.r_state;
+				var t_item = new Order($scope.credentials.order);
+				console.log($scope.credentials.order);
+				t_item.$save().then(function(data){
+					console.log('1st: ',data);
+/*					$scope.credentials.order.$get().then(function(data) {
+						console.log('2nd', data);
+						$scope.credentials.order = data;
+				}) */
+				})
+			}
+		}
+		$scope.alertClose = function(idx) {
+			$scope.credentials.alerts.splice(idx);
+		}
 // Update the required information every minute
-		var tmp = setInterval(function(){
+//		var tmp = setInterval(function(){
 			var t_item = TableStatus.getByTable({id: $scope.credentials.id}, function(data){
 				$scope.credentials.table = data;
 			})
@@ -327,7 +340,7 @@ angular.module('myApp.controllers', [])
 					$location.path('/table');
 				})
 			}
-		},60000);
+//		},60000);
     }])
 // Customer Menu controller
     .controller('cMenuCtrl', ['$scope', '$location', '$route',
@@ -351,7 +364,6 @@ angular.module('myApp.controllers', [])
 			delete $scope.menuitem[idx].custom;
 			$scope.credentials.cart.items.push(t_item);
 			if ($scope.modalInstance != null) {
-				console.log($scope.modalInstance);
 				$scope.modalInstance.close('success');
 				delete $scope.modalInstance;
 			}
@@ -375,12 +387,36 @@ angular.module('myApp.controllers', [])
 			$filter, Order, oMenuItem) {
 		if ($scope.credentials.order == null)
 			$scope.credentials.order = new Order();
-		$scope.cartTotal = function() {
+			$scope.cartTotal = 0;
+		$scope.$watch('credentials.cart.items.length', function(){
+			if ($scope.credentials.cart.items) {
+				var len = $scope.credentials.cart.items.length;
+				var sum = 0;
+
+				for (var i=0;i<len;i++)
+					sum += parseFloat($scope.credentials.cart.items[i].price);
+
+				$scope.cartTotal = sum.toFixed(2);
+			}
+			else $scope.cartTotal = 0;
+		})
+		$scope.postOrderItems = function () {
 			var len = $scope.credentials.cart.items.length;
-			var sum = 0;
-			for (var i=0;i<len;i++)
-				sum += parseFloat($scope.credentials.cart.items[i].price);
-			return sum.toFixed(2);
+			$scope.credentials.order.items = new Array();
+			for (var i=0;i<len;i++) {
+				if (parseInt($scope.credentials.cart.items[i].mc_id) == 5)
+					$scope.credentials.can_refill = true;
+				$scope.credentials.order.items[i] = new oMenuItem();
+				$scope.credentials.order.items[i].o_id = $scope.credentials.order.id;
+				$scope.credentials.order.items[i].mi_id = $scope.credentials.cart.items[i].id;
+				$scope.credentials.order.items[i].state = 0;
+				if ($scope.credentials.cart.items[i].custom != null)
+					$scope.credentials.order.items[i].custom = $scope.credentials.cart.items[i].custom;
+			}
+			oMenuItem.mCreate($scope.credentials.order.items, function(data) {
+				$scope.credentials.order.items = new Array();
+				$scope.credentials.cart.items = new Array();
+			})
 		}
 		$scope.placeOrder = function() {
 			if ($scope.credentials.order.id == null) {
@@ -393,27 +429,21 @@ angular.module('myApp.controllers', [])
 				$scope.credentials.order.total = 0;
 				$scope.credentials.order.o_state = false;
 				$scope.credentials.order.r_state = false;
+				$scope.credentials.can_refill = false;
 				var t_item = new Order($scope.credentials.order);
 				t_item.$create().then(function(data){
+					console.log(data);
 					$scope.credentials.order.id = data.success.id;
-					$scope.credentials.order.$get().then(function(data){
+					$scope.credentials.order.$get().then(function(data) {
 						$scope.credentials.order = data;
+						$scope.postOrderItems();
 					})
 				})
 			}
-			var len = $scope.credentials.cart.items.length;
-			$scope.credentials.order.items = new Array();
-			for (var i=0;i<len;i++) {
-				$scope.credentials.order.items[i] = new oMenuItem();
-				$scope.credentials.order.items[i].o_id = $scope.credentials.order.id;
-				$scope.credentials.order.items[i].mi_id = $scope.credentials.cart.items[i].id;
-				$scope.credentials.order.items[i].state = 0;
-				if ($scope.credentials.cart.items[i].custom != null)
-					$scope.credentials.order.items[i].custom = $scope.credentials.cart.items[i].custom;
-			}
-			console.log($scope.credentials.order.items);
-			oMenuItem.create($scope.credentials.order.items); //.create()//.then(function(data){
-//				console.log(data);
-//			})
+			else
+				$scope.postOrderItems();
+			console.log($scope.credentials.alerts);
+			$scope.credentials.alerts.push({type: 'info', msg: 'Your order has been placed successfully!'});
+			console.log($scope.credentials.alerts);
 		}
     }])

@@ -448,6 +448,11 @@ angular.module('myApp.services', ['ngResource'])
 		    		function (data, headersSetter) {
 	    				data.o_state = (data.o_state == true) ? "1" : "0";
 	    				data.r_state = (data.r_state == true) ? "1" : "0";
+	    				delete data.start_time;
+	    				if (data.end_time == null)
+	    					delete data.end_time;
+	    				if (data.cp_id == null)
+	    					delete data.cp_id;
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -533,21 +538,27 @@ angular.module('myApp.services', ['ngResource'])
 		    		}
 		    	].concat($http.defaults.transformRequest) */
 	    	},
-	    	create: {
+	    	mCreate: {
 	    		method: 'POST',
 	    		params: {
 	    			id:	''
 	    		},
-	    		isArray: true
-/*		    	transformRequest: [
+		    	transformRequest: [
 		    		function (data, headersSetter) {
-	    				data.o_state = (data.o_state == true) ? "1" : "0";
-	    				data.r_state = (data.r_state == true) ? "1" : "0";
+						if (Array.isArray(data))
+							return data;
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			return newdata;
 		    		}
-		    	].concat($http.defaults.transformRequest) */
+		    	].concat($http.defaults.transformRequest),
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			return newdata;
+		    	}]),
+    			isArray: true
 	    	}
 		})
     }])
