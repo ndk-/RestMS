@@ -2,52 +2,54 @@
 	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">
 		&times;
 	</button>
-	<h4 class="modal-title">Edit Menu Item</h4>
+	<h4 class="modal-title">Edit Menu Item:&nbsp;&nbsp;<span class="label label-{{up.label}}">{{up.message}}</span></h4>
 </div>
 <div class="modal-body">
-	<form role="form" class="form">
-		<label for="mi_name">Title</label>
+	<form role="form" class="form" name="menuForm" novalidate>
+		<label for="mi_name">Title:</label>&nbsp;&nbsp;<span class="label label-danger" ng-show="!menuForm.mi_name.$valid && !menuForm.$pristine">name should not be empty</span>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Name" id="mi_name" ng-model="t_item.name" />
+			<input type="text" class="form-control input-lg" placeholder="Name" id="mi_name" name="mi_name" ng-model="t_item.name" required />
 		</div>
-		<label for="mi_desc">Description</label>
+		<label for="mi_desc">Description:</label>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Description" id="mi_desc" ng-model="t_item.description" />
+			<input type="text" class="form-control input-lg" placeholder="Description" id="mi_desc" name="mi_desc" ng-model="t_item.description" />
 		</div>
-		<label for="mi_price">Price</label>
+		<label for="mi_price">Price:</label>&nbsp;&nbsp;<span class="label label-danger" ng-show="!menuForm.mi_price.$valid && !menuForm.$pristine">invalid price</span>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Price" id="mi_price" ng-model="t_item.price" />
+			<input type="text" class="form-control input-lg" placeholder="Price" id="mi_price" name="mi_price" ng-pattern="/^[0-9]+(\.[0-9]+)?$/" ng-model="t_item.price" required />
 		</div>
-		<label for="mi_pict">Picture</label>
+		<label for="mi_allrg">Allergy Information:</label>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Picture" id="mi_pict" ng-model="t_item.picture" />
+			<input type="text" class="form-control input-lg" placeholder="Allergy Information" id="mi_allrg" name="mi_allrg" ng-model="t_item.allergy" />
 		</div>
-		<label for="mi_allrg">Allergy Information</label>
+		<label for="mi_cal">Calories:</label>&nbsp;&nbsp;<span class="label label-danger" ng-show="!menuForm.mi_cal.$valid && !menuForm.$pristine">invalid calories amount</span>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Allergy Information" id="mi_allrg" ng-model="t_item.allergy" />
-		</div>
-		<label for="mi_cal">Calories</label>
-		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Calories" id="mi_cal" ng-model="t_item.calories" />
+			<input type="text" class="form-control input-lg" placeholder="Calories" id="mi_cal" name="mi_cal" ng-model="t_item.calories" ng-pattern="/^[0-9]+$/" required />
 		</div>
 		<div class="btn-group">
 			<button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Spicy" tooltip-placement="bottom" ng-model="t_item.spicy" ng-class="{'btn-info': t_item.spicy}">
 				<i class="fa fa-fw fa-fire"></i>
 			</button>
 			<button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Vegetarian" tooltip-placement="bottom" ng-model="t_item.vegetarian" ng-class="{'btn-info': t_item.vegetarian}">
-				<i class="fa fa-fw fa-leaf"></i>
+				<i class="fa fa-fw fa-pagelines"></i>
 			</button>
 			<button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Gluten Free" tooltip-placement="bottom" ng-model="t_item.gfree" ng-class="{'btn-info': t_item.gfree}">
-				<i class="fa fa-fw fa-lemon-o"></i>
+				<i class="fa fa-fw fa-leaf"></i>
 			</button>
 		</div>
 	</form>
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-primary btn-lg" ng-click="saveItem()">
+	<button type="button" class="btn btn-primary btn-lg" ng-click="saveItem()" ng-class="{disabled: !menuForm.$valid}">
 		<i class="fa fa-save"></i> Save
 	</button>
+	<label for="mi_pict" class="btn-link">
+		<input ng-file-select="selectFile($files, t_item.id)" type="file" class="form-control" id="mi_pict" name="mi_pict" ng-disabled="!t_item.id" />
+		<button type="button" class="btn btn-primary btn-lg" ng-class="{disabled: !t_item.id}">
+			<i class="fa fa-upload"></i> Upload Photo
+		</button>
+	</label> 
 	<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()">
-		<i class="fa fa-times"></i> Cancel
+		<i class="fa fa-times"></i> Close
 	</button>
 </div>

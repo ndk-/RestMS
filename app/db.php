@@ -1,12 +1,17 @@
 <?php
 
+session_start();
 
-//$requestBody = file_get_contents('php://input');
-//@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp', print_r($requestBody, true));
-@file_put_contents('/home/dn0086/public_html/RestMS/tmp/server', print_r($_SERVER, true));
+if (!isset($_SESSION['credentials']['a_lvl'])) {
 
+    header("HTTP/1.1 401 Unauthorized");
+    echo json_encode(array('error' => 'Unauthorized request'));
+    exit();
+}
 
-$dsn = 'mysql://dn0086:*@student-db/dn0086/';
+// Change here
+$dsn = 'mysql://USER:PASS@HOST/DB/';
+
 $clients = array
 (
 );
@@ -190,15 +195,20 @@ ArrestDB::Serve('GET', '/(#any)/(#num)?', function ($table, $id = null)
 	return ArrestDB::Reply($result);
 });
 
-ArrestDB::Serve('DELETE', '/(#any)/(#num)', function ($table, $id)
+ArrestDB::Serve('DELETE', '/(#any)/(#num)?', function ($table, $id = null)
 {
-	$query = array
-	(
-		sprintf('DELETE FROM `%s` WHERE `%s` = ?', $table, 'id'),
-	);
 
-	$query = sprintf('%s;', implode(' ', $query));
-	$result = ArrestDB::Query($query, $id);
+	if ($id === null) {
+		$query = array ( sprintf('DELETE FROM `%s`', $table) );
+		$query = sprintf('%s;', implode(' ', $query));
+		$result = ArrestDB::Query($query);
+	}
+
+	else {
+		$query = array ( sprintf('DELETE FROM `%s` WHERE `%s` = ?', $table, 'id') );
+		$query = sprintf('%s;', implode(' ', $query));
+		$result = ArrestDB::Query($query, $id);
+	}
 
 	if ($result === false)
 	{
@@ -285,8 +295,6 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 	{
 		$queries = array();
 
-		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/post', print_r($_POST, true));
-
 		if (count($_POST) == count($_POST, COUNT_RECURSIVE))
 		{
 			$_POST = array($_POST);
@@ -318,8 +326,6 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 				$adata,
 			);
 		}
-
-		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/queries', print_r($queries, true));
 
 		if (count($queries) > 1)
 		{
@@ -374,8 +380,10 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 	return ArrestDB::Reply($result);
 });
 
-ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
+ArrestDB::Serve('PUT', '/(#any)/(#num)?', function ($table, $id = null)
 {
+	$_PUT = $GLOBALS['_PUT'];
+
 	if (empty($GLOBALS['_PUT']) === true)
 	{
 		$result = array
@@ -388,50 +396,53 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 		);
 	}
 
-	else if (is_array($GLOBALS['_PUT']) === true)
-	{
+	else if (is_array($GLOBALS['_PUT']) === true) {
+
 		$data = array();
 		$adata = array();
 
-		foreach ($GLOBALS['_PUT'] as $key => $value)
-		{
-			if ($key != 'id') {
-				$data[$key] = sprintf('`%s` = ?', $key);
-				$adata[$key] = sprintf ('%s', $value);
+		if (count($_PUT) == count($_PUT, COUNT_RECURSIVE)) {
+			$_PUT = array($_PUT);
+		}
+
+		foreach ($_PUT as $row) {
+
+			if ($id === null && $row['id'] !== null )
+				$o_id = $row['id'];
+			else
+				$o_id = $id;
+
+			foreach ($row as $key => $value) {
+				if ($key != 'id') {
+					$data[$key] = sprintf('`%s` = ?', $key);
+					$adata[$key] = sprintf ('%s', $value);
+				}
 			}
-		}
 
-		$query = array
-		(
-			sprintf('UPDATE `%s` SET %s WHERE `%s` = %s', $table, implode(', ', $data), 'id', $id),
-		);
+			$query = array (
+				sprintf('UPDATE `%s` SET %s WHERE `%s` = %s', $table, implode(', ', $data), 'id', $o_id),
+			);
 
-		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/put', print_r($query, true));
-		@file_put_contents('/home/dn0086/public_html/RestMS/tmp/put', print_r($adata, true), FILE_APPEND);
-		
-		$query = sprintf('%s;', implode(' ', $query));
-		$result = ArrestDB::Query($query, $adata);
-		if ($result === false)
-		{
-			$result = array
-			(
-				'error' => array
-				(
-					'code' => 409,
-					'status' => 'Conflict',
-				),
-			);
-		}
-		else
-		{
-			$result = array
-			(
-				'success' => array
-				(
-					'code' => 200,
-					'status' => 'OK',
-				),
-			);
+			$query = sprintf('%s;', implode(' ', $query));
+			$result = ArrestDB::Query($query, $adata);
+
+			if ($result === false) {
+				$result = array (
+					'error' => array (
+						'code' => 409,
+						'status' => 'Conflict',
+					),
+				);
+				break;
+			}
+			else {
+				$result = array (
+					'success' => array (
+						'code' => 200,
+						'status' => 'OK',
+					),
+				);
+			}
 		}
 	}
 

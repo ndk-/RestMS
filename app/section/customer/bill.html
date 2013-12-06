@@ -1,0 +1,137 @@
+<div ng-controller="cBillCtrl">
+	<div class="menu panel color2 color2bord col-lg-8 col-md-8">
+		<div class="panel-heading">
+			Payment Information
+		</div>
+		<tabset>
+			<tab>
+				<tab-heading>
+					<i class="fa fa-credit-card"></i> Pay By Credit Card
+				</tab-heading>
+				<br />
+				<form role="form" class="form" id="billForm" name="billForm" novalidate>
+					<label for="cc_name">Name On Credit Card:</label>
+					<div class="form-group col-lg-12">
+						<input type="text" class="form-control input-lg" placeholder="Please enter your name" id="cc_name" ng-model="cc.name" />
+					</div>
+					<label for="cc_number">Credit Card Number:</label>&nbsp;&nbsp;<div class="label label-danger" ng-show="!billForm.cc_number.$valid && !billForm.$pristine">invalid card number</div>
+					<div class="form-group col-lg-12">
+						<input type="text" class="form-control input-lg" placeholder="1234567890123456" ng-pattern="/^[0-9]+$/" ng-minlength="16" ng-maxlength="16" id="cc_number" name="cc_number" ng-model="cc.number" required />
+					</div>
+					<label>Credit Card Expiration Date:</label>&nbsp;&nbsp;<div class="label label-danger" ng-show="!billForm.cc_month.$valid">invalid expiry date</div>
+					<div class="clearfix">
+						<div class="form-group col-lg-2 col-md-2">
+							<label for="cc_month">Month</label>
+							<select class="form-control input-lg" ng-model="cc.month" id="cc_month" name="cc_month" expmonth>
+								<option ng-repeat="itm in myRange(1,12)">
+									{{itm}}
+								</option>
+							</select>
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label for="cc_month">Year</label>
+							<select class="form-control input-lg" ng-model="cc.year" id="cc_year">
+								<option ng-repeat="itm in myRange(current_date.getFullYear(),100)">
+									{{itm}}
+								</option>
+							</select>
+						</div>
+					</div>
+					<label for="cc_cvv">Credit Cart Security Number:</label>&nbsp;&nbsp;<div class="label label-danger" ng-show="!billForm.cc_cvv.$valid && !billForm.$pristine">invalid security number</div>
+					<div class="form-group col-lg-12 col-md-12">
+						<input type="text" class="form-control input-lg" placeholder="1234" id="cc_cvv" name="cc_cvv" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" ng-model="cc.cvv" required />
+					</div>
+					<label for="tips">Tips Amount:</label>&nbsp;&nbsp;<span class="label label-default">{{tip}}%</span>
+					<div class="form-group col-lg-12 col-md-12 rangeslider">
+						<input type="range" class="form-control" min="0" max="100" id="tips" ng-model="tip" />
+					</div>
+					<label for="coupon">Coupon:</label>&nbsp;&nbsp;<div class="label label-danger">{{error.coupon}}</div>
+					<div class="form-group col-lg-12 col-md-12 input-group">
+						<input type="text" class="form-control input-lg" placeholder="Please enter coupon (optional)" id="coupon" ng-model="coupon" />
+						<span class="input-group-btn">
+							<button class="btn btn-primary btn-lg" ng-click="applyCoupon()">Apply</button>
+						</span>
+					</div>
+					<label for="round">Round to the nearest dollar:</label>
+					<button type="button" class="btn btn-primary btn-sm" btn-checkbox ng-class="{'btn-info active': roundup}" ng-model="roundup">
+						<i class="fa fa-fw" ng-class="{'fa-check-square-o': roundup, 'fa-square-o': !roundup}"></i>
+					</button>
+					<br />
+					<button type="button" class="btn btn-primary btn-lg" ng-click="processPayment()" ng-class="{ disabled: !billForm.$valid }">
+						<i class="fa fa-briefcase"></i> Pay
+					</button>
+				</form>
+			</tab>
+			<tab>
+				<tab-heading>
+					<i class="fa fa-money"></i> Pay By Cash
+				</tab-heading>
+				<br />
+				<div class="alert alert-info">
+					In order to pay by cash, please call a waiter for assistance.
+				</div>
+				<button type="button" class="btn btn-primary btn-lg" btn-checkbox ng-model="mysession.table.cw_state" ng-class="{'btn-info': mysession.table.cw_state}" ng-click="callWaiter()">
+					<i class="fa fa-phone"></i> Call a Waiter
+				</button>
+			</tab>
+		</tabset>
+	</div>
+	<div class="cart panel col-lg-4 col-md-4 col-sm-4 color2bord">
+		<form role="form" class="form-inline">
+			<div class="panel-heading">
+				My Order
+			</div>
+			<div class="panel-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Custom</th>
+							<th>Price</th>
+							<th>Include</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="i in mysession.order.items">
+							<td>{{$index + 1}}</td>
+							<td>{{i.name}}</td>
+							<td>{{i.custom == null ? 'No' : 'Yes'}}</td>
+							<td>${{i.price}}</td>
+							<td class="text-center">
+							<button type="button" class="btn btn-primary btn-xs" ng-class="{'btn-info active': i.pay}" ng-model="i.pay" ng-click="getTotal($index)">
+								<i class="fa fa-fw" ng-class="{'fa-check-square-o': i.pay, 'fa-square-o': !i.pay}"></i>
+							</button></td>
+						</tr>
+						<tr ng-show="mysession.order.items.length == 0">
+							<td colspan="5" class="text-center">
+								<h4>Thank you!</h4><br />
+								<button type="button" class="btn btn-primary btn-lg" ng-class="{disabled: !mysession.order.o_state}" ng-click="cLogout()">
+									<i class="fa fa-sign-out"></i> Finish Dining
+								</button>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th colspan="4">Tips {{tip}}%:</th>
+							<th>${{tipsTotal}}</th>
+						</tr>
+						<tr>
+							<th colspan="4">Sales Tax {{tax}}%:</th>
+							<th>${{salesTax}}</th>
+						</tr>
+						<tr ng-show="couponTotal">
+							<th colspan="4">Coupon {{coupon}}:</th>
+							<th>${{couponTotal}}</th>
+						</tr>
+						<tr>
+							<th colspan="4">Total:</th>
+							<th>${{orderTotal}}</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</form>
+	</div>
+</div>

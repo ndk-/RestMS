@@ -1,0 +1,32 @@
+<div class="modal-header">
+	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">
+		&times;
+	</button>
+	<h4 class="modal-title">Cash Payment</h4>
+</div>
+<div class="modal-body">
+	<form role="form" class="form" name="moneyForm" novalidate>
+		<label for="wo_tips">Tips amount:</label>&nbsp;&nbsp;<div class="label label-danger" ng-show="!moneyForm.wo_tips.$valid && !moneyForm.$pristine">invalid amount</div>
+		<div class="form-group">
+			<input type="text" class="form-control input-lg" ng-pattern="/^[0-9]+(\.[0-9]+)?$/" placeholder="09.09" name="wo_tips" id="wo_tips" ng-model="wo.tips" required />
+		</div>
+		<label for="wo_pais">Paid amount (with tips):</label>&nbsp;&nbsp;<div class="label label-danger" ng-show="!moneyForm.wo_paid.$valid && !moneyForm.$pristine">invalid amount</div>
+		<div class="form-group">
+			<input type="text" class="form-control input-lg" ng-pattern="/^[0-9]+(\.[0-9]+)?$/" placeholder="90.90" name="wo_paid" id="wo_paid" ng-model="wo.paid" required />
+		</div>
+		<label for="wo_pais">Mark if order completed:</label>
+		<div class="form-group">
+			<button type="button" class="btn btn-primary btn-lg" btn-checkbox tooltip="Order Completed" tooltip-placement="bottom" ng-model="wo.o_state" ng-class="{'btn-info': wo.o_state}">
+				<i class="fa fa-fw" ng-class="{'fa-square-o': !wo.o_state, 'fa-check-square-o': wo.o_state}"></i>
+			</button>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary btn-lg" ng-click="saveMoney()" ng-class="{disabled: !moneyForm.$valid}">
+		<i class="fa fa-save"></i> Save
+	</button>
+	<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()">
+		<i class="fa fa-times"></i> Cancel
+	</button>
+</div>

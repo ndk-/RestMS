@@ -1,22 +1,46 @@
 done
 * screen update issue
-
-high priority
-* add price to ordereditem table
 * add order
 * add payment page
 * add kitchen section
 * add waiter section
-* finish game tab in manager section
+* remove cryptoJS (not working on android)
+* customer needs setInterval for updating his objects !!!fixed
+* change table status on customer's login
+* input check 
+* picture upload
+* add comments
+* add menu items to each category
+* remove game/chat menu tabs
+* beautify slider
+* check test cases (I tested for most of the test cases anyway, so basically it's done)
+* unit tests (5 of them)
+* manager statistics
+* code clean-up
+* fix srs according to the current design (minor interface differences)
+* free kids meal with adult meal
+* combo meal deal (-$1)
+* tip + round up
+* time occupied
+* add chat (requires either php or sql side)
+
+high priority
+* more restrictive way to use db.php
+* confimation dialogs for important actions like delete menu item, etc.
+* reset statistics
+* change menu category id dependence (instead add to menucategory table additional fields that reflect required parameters)
+* clean up services.js
+* clean up controllers.js
+* more error checking for controllers.js
+* move defaults like default tax and default tips to a separate table ?
+* encrypt passwords stored in database
 
 medium priority
-* add game
-* add chat
-* input check
-* https://github.com/nervgh/angular-file-upload
+* add points (everything is in place, just link points to coupons and show "redeem" message when customer logs in. finalizing/testing might take too much time)
+* add customer's emails to the manager's section
 
 low priority
-* add comments
-* code clean-up
-* cookies for page refresh support
-* remove cryptoJS (not working on android)
+* add ability to edit menu categories (some code changes needed to reflect new structure)
+* add game (potentially huge time consumer, due a lot of testing/potential features)
+* cookies for page refresh support (not needed ?)
+* add price to ordereditem table (not needed ?)

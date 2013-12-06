@@ -1,1 +1,0 @@
-$('.menuItem').modal('show');

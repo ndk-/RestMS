@@ -12,17 +12,19 @@
 
 	// Get JSON data
     $data = json_decode(file_get_contents('php://input'), true);
-//	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-1', print_r($_SERVER, true));
-//	@file_put_contents('/home/dn0086/public_html/RestMS/tmp/mytmp-2', print_r($data, true));
 
 // Connect to DB if data has username and encoded password
     if ($data[username] != '' && $data[password] !='') {
 
 // Try connect to DB
 	try {
-@	    $db = new PDO('mysql:host=student-db;dbname=dn0086', 'dn0086', '*');
+// Change here		
+@	    $db = new PDO('mysql:host=HOST;dbname=DB', 'USER', 'PASS');
+@		$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 @	    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-@	    $stmt = $db->query("SELECT * FROM access WHERE username='".$data[username]."' AND password='".$data[password]."'");
+// Guarantees no SQL injections, kind of :) 
+@	    $stmt = $db->prepare("SELECT * FROM access WHERE username = :username AND password = :password");
+@		$stmt->execute(array('username' =>$data[username], 'password' => $data[password]));
 @	    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
@@ -41,6 +43,8 @@
 // Otherwise, allow access
 	else {
 @		$stmt = $db->query("UPDATE access SET `last_time`='".date(c)."' WHERE id='".$result[0]['id']."'");
+@		ini_set("session.cookie_lifetime","36000");
+@		ini_set('session.gc_maxlifetime', 60*60*10);
 	    session_start();
 	    $_SESSION[credentials]=$result[0];
 	    echo json_encode(array('success' => 'Login successful',

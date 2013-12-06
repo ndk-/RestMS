@@ -1,5 +1,5 @@
 <div class="container">
-	<form class="form-signin" name="LoginForm" ng-submit="Submit()">
+	<form class="form-signin" novalidate name="loginForm" ng-submit="loginSubmit()" novalidate>
 		<div class="panel vcenter padding10 color2 color2bord">
 			<div class="panel-heading color3">
 				<h3 class="panel-title">Please sign-in:
@@ -7,8 +7,8 @@
 				</h3>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control input-lg" name="username" placeholder="Enter Your Username" ng-model="username" required />
-				<input type="password" class="form-control input-lg" placeholder="Enter Your Password" ng-model="password" required />
+				<input type="text" class="form-control input-lg" name="username" placeholder="Enter Your Username" ng-model="mysession.username" required />
+				<input type="password" class="form-control input-lg" placeholder="Enter Your Password" ng-model="mysession.password" required />
 				<button type="submit" class="btn btn-lg btn-block btn-primary">
 					<i class="fa fa-sign-in"></i> Login
 				</button>

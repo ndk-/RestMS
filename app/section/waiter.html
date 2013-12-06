@@ -1,0 +1,93 @@
+<div class="container">
+	<div class="navbar navbar-default navbar-nav navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
+			</div>
+			<p class="navbar-text pull-right">
+				Signed in as <a ng-click="wLogout()" class="navbar-link">Server</a>
+			</p>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a ng-click="">Tables</a>
+<!--						<a ng-click="im()">Messages</a> -->
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="menu panel color2 color2bord padding10 waiter">
+		<accordion close-others="true">
+			<div class="aheading" ng-repeat="i in mysession.wtview">
+				<div class="btn-group pull-right">
+					<button class="btn btn-primary btn-lg" ng-class="{'btn-info': i.t_state == '1', 'btn-warning active': i.t_state == '2' }" ng-click="settFree(i.id, i.tw_id)" tooltip="Table Status">
+						<i class="fa fa-fw fa-users"></i>
+					</button>
+					<button class="btn btn-primary btn-lg" ng-class="{'btn-info active': i.cw_state == '1' }" ng-click="setcwServed(i.tw_id)" tooltip="Assitance Request">
+						<i class="fa fa-fw fa-bell-o"></i>
+					</button>
+					<button class="btn btn-primary btn-lg" ng-class="{'btn-info active': i.r_state == '1' }" ng-click="setrServed(i.id)" tooltip="Refill Request">
+						<i class="fa fa-fw fa-glass"></i>
+					</button>
+					<button class="btn btn-primary btn-lg" ng-class="{'btn-warning': i.paid != 0 && i.paid != null }" ng-click="setMoney(i.id)" tooltip="Payment Status">
+						<i class="fa fa-fw fa-money"></i>
+					</button>
+				</div>
+				<accordion-group is-open="a_open[$index]">
+					<accordion-heading>
+						{{i.t_name}}
+						<span class="label label-info" ng-show="i.id">Order #{{i.id}} / Time: {{i.pass_time}} / Tips: ${{i.tips}} / Paid: ${{i.paid}} / Unpaid: ~${{getTotal(i.id)}}</span>
+						<i class="fa" ng-class="{'fa-caret-right': !a_open[$index], 'fa-caret-down': a_open[$index]}"></i>
+				</accordion-heading> 
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr ng-show="i.items != null">
+								<th>#</th>
+								<th>Name</th>
+								<th>Custom</th>
+								<th>Price</th>
+								<th>Cook</th>
+								<th>Pay</th>
+								<th>Comp</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="j in i.items">
+								<td>{{$index + 1}}</td>
+								<td>{{j.name}}</td>
+								<td>{{j.custom == null ? 'No' : 'Yes'}}
+									&nbsp;&nbsp;
+									<button class="btn btn-primary btn-xs" tooltip="{{j.custom}}" tooltip-trigger="click" ng-show="j.custom != null">
+										<i class="fa fa-fw fa-info"></i>
+									</button>
+								</td>
+								<td>${{j.price}}</td>
+								<td class="text-center">
+									<button type="button" class="btn btn-primary btn-lg" ng-class="{'btn-warning': j.c_state == '1', 'btn-info active': j.c_state == '2'}" tooltip="Mark as Served" ng-click="setoiServed(i.id, j.id)">
+										<i class="fa fa-fw" ng-class="{'fa-external-link': j.c_state == '1', 'fa-fire': j.c_state == '0', 'fa-thumbs-up': j.c_state == '2'}"></i>
+									</button>
+								</td>
+								<td class="text-center">
+									<button type="button" class="btn btn-primary btn-lg" ng-class="{'btn-info active': j.p_state == '1', 'btn-danger active': j.p_state == '2'}" tooltip="Mark as Paid" ng-click="setoiPaid(i.id, j.id, 1)">
+										<i class="fa fa-fw" ng-class="{'fa-check-square-o': j.p_state == '1', 'fa-square-o': j.p_state == '0', 'fa-frown-o': j.p_state == '2' }"></i>
+									</button>
+								</td>
+								<td class="text-center">
+									<button type="button" class="btn btn-primary btn-lg" ng-class="{'btn-info active': j.p_state == '2'}" tooltip="Comp Item" ng-click="setoiPaid(i.id, j.id, 2)">
+										<i class="fa fa-fw fa-thumbs-down"></i>
+									</button>
+								</td>
+							</tr>
+							<tr ng-show="i.items == null">
+								<td colspan="5" class="text-center">
+									<h4>No active orders</h4>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</accordion-group>
+			</div>
+		</accordion>
+	</div>
+</div>

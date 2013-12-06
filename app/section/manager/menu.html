@@ -1,10 +1,13 @@
-<div class="menu panel color2 color2bord" ng-controller="mMenuCtrl">
+<div class="menu panel color2 color2bord row" ng-controller="mMenuCtrl">
 	<ol class="breadcrumb color3">
 		Categories:
 		<li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'>
 			<a ng-click="mc.idx=$index">{{c.name}}</a>
 		</li>
 	</ol>
+	<alert ng-repeat="a in mysession.alerts" type="a.type" close="alertClose($index)">
+		{{a.msg}}
+	</alert>
 	<div class="text-center">
 		<div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
 			<a ng-click="edit(i.id)" class="thumbnail"> <img ng-src="img/{{i.picture}}" alt="image"></a>
@@ -12,15 +15,21 @@
 				{{i.name}}
 			</div>
 			<div class="btn-group-vertical cbtn">
-				<button type="button" class="btn" tooltip="Edit" tooltip-placement="left" ng-click="editItem(i.id)">
+				<button type="button" class="btn btn-primary" tooltip="Edit" tooltip-placement="left" ng-click="editItem(i.id)">
 					<i class="fa fa-fw fa-edit"></i>
 				</button>
-				<button type="button" class="btn" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)">
+				<button type="button" class="btn btn-primary" tooltip="Disable" tooltip-placement="left" btn-checkbox ng-model="i.state" ng-click="disableItem(i.id)" ng-class="{'btn-info': i.state}">
 					<i class="fa fa-fw fa-eye-slash"></i>
 				</button>
-				<button type="button" class="btn" tooltip="Remove" tooltip-placement="left" ng-click="removeItem(i.id)">
+				<button type="button" class="btn btn-primary" tooltip="Remove" toolip-placement="left" ng-click="removeItem(i.id)">
 					<i class="fa fa-fw fa-trash-o"></i>
 				</button>
+				<button type="button" class="btn btn-primary" tooltip="Favorite" toolip-placement="left" btn-checkbox ng-model="i.fav" ng-click="makeFavorite(i.id)" ng-class="{'btn-info': i.fav}">
+					<i class="fa fa-fw fa-star"></i>
+				</button>
+<!--			<b tooltip="Remove" tooltip-placement="left">
+				<button type="button" class="btn" mypopover="{{i.id}}" mypopover-placement="left" ng-click = "removeItem(i.id)"></b> -->
+
 			</div>
 		</div>
 		<div class="thumbwrap">

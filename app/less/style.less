@@ -1,26 +1,8 @@
 @import "bootstrap/theme.less"; // bootstrap
 @import "bootstrap/bootstrap.less"; // bootstrap
 @import "mbootstrap.less";
-
-@color1: #bad095;
-@color1b: #bdd98d;
-@color2: #b1ddb6;
-@color3: #ddccb1;
-@color4: #c1b1dd;
-
-.color1 {
-    background: @color1;
-    color: darken(@color1, 50%);
-}
-.color2 {
-    background: @color2;
-    color: darken(@color2, 50%);
-}
-.color3 {
-    background: @color3;
-    color: darken(@color3, 50%);
-}
-
+@import "colors.less";
+@import "slider.less";
 
 .dropdown-menu {
     background: @color2;
@@ -57,6 +39,9 @@ h3.panel-title {
 }
 
 .thumbwrap {
+//    .col-sm-6
+//    .col-md-5
+//    .col-lg-4
     width: 362px;
     display: inline-block;
     margin: 3px 0 0 8px;
@@ -132,7 +117,6 @@ h3.panel-title {
 }
 
 .cbtn button {
-    .btn-primary;
     .btn-lg;
     color: darken(@color4, 50%);
 }
@@ -223,15 +207,19 @@ a {
 .coupon input[type="radio"] {
   display: none;
 }
-.game-edit .panel-heading {
+.game-edit .panel-heading, .waiter .panel-heading {
   .color3
 }
-.game-edit .panel {
+.game-edit .panel, .waiter .panel {
   .color1
 }
 .btn-group-vertical > .btn:not(:first-child) {
   margin-top: -1px;
 }
+.btn-group > .btn:not(:first-child) {
+  margin-left: -1px;
+}
+
 .navbar-default .pull-right .navbar-link {
   color: @link-color;
 } 
@@ -243,4 +231,53 @@ a {
 }
 .myalerts {
   margin-bottom: 5px;
+}
+#billForm select {
+  -webkit-appearance: none;
+  padding-top: 0;
+}
+.waiter .panel-heading {
+   height: 50px;
+}
+.waiter a.accordion-toggle:hover {
+  text-decoration: none;
+}
+.waiter div.aheading {
+  position: relative;
+}
+.waiter div.aheading .pull-right {
+  position: absolute;
+  margin-top: 10px;
+  right: 10px;
+  z-index: 1025;
+}
+.confirmation {
+  width: 185px;
+  z-index: 1035;
+}
+.confirmation .popover-title {
+  font-weight: bold;
+}
+.confirmation .btn-yes {
+  .btn-info;
+}
+.confirmation .btn-no {
+  .btn-warning;
+}
+a.fav {
+  color: @btn-success-color;
+}
+input[type="file"] {
+  position: absolute;
+  width: 151px;
+  height: 34px;
+  opacity: 0;
+}
+.label-empty {
+  color: @state-success-text;
+}
+
+.chat {
+  max-height: 200px;
+  overflow-y: scroll;
 }

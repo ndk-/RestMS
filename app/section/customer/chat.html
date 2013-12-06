@@ -1,0 +1,29 @@
+<div class="modal-header">
+	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">
+		&times;
+	</button>
+	<h4 class="modal-title">Welcome to Our Chat!</h4>
+</div>
+<div class="modal-body">
+	<div class="panel chat">
+		<div ng-repeat="m in msgs">
+			<span class="label" ng-class="{'label-warning': m.from == mysession.username, 'label-info': m.from != mysession.username}">{{renameTable(m.from)}}</span>
+			{{m.message}}
+		</div><span id="bottom">{{scrollToBottom()}}&nbsp;</span>
+	</div>
+	<form class="form" ng-submit="sendChat(mysession.my_msg)">
+		<div class="form-group input-group">
+			<input type="text" class="form-control input-lg" placeholder="Write your message here" ng-model="mysession.my_msg" />
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-success btn-lg">
+					<i class="fa fa-envelope-o"></i> Send
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()">
+		<i class="fa fa-times"></i> Close
+	</button>
+</div>

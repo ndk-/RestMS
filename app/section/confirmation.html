@@ -1,0 +1,14 @@
+<div class="popover {{placement}} confirmation" ng-class="{ in: isOpen(), fade: animation() }">
+	<div class="arrow"></div>
+	<div class="popover-inner" ng-controller="ConfirmCtrl">
+		<h3 class="popover-title">Are You Sure ?</h3>
+		<div class="popover-content btn-group">
+			<button type="button" class="btn btn-yes" ng-click="popConfirm(true)">
+				<i class="fa fa-fw fa-check"></i> Yes
+			</button>
+			<button type="button" class="btn btn-no" ng-click="popConfirm(null)">
+				<i class="fa fa-fw fa-times"></i> No
+			</button>
+		</div>
+	</div>
+</div>

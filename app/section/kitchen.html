@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="navbar navbar-default navbar-nav navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
+			</div>
+			<p class="navbar-text pull-right">
+				Signed in as <a ng-click="kLogout()" class="navbar-link">Chef de Cuisine</a>
+			</p>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a ng-click="">Orders</a>
+<!--						<a ng-click="im()">Messages</a> -->
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="menu panel color2 color2bord padding10">
+		<table class="table table-striped table-bordered">
+			<thead ng-hide="mysession.kview == null">
+				<tr>
+					<th>#</th>
+					<th>O#</th>
+					<th>Time</th>
+					<th>W#</th>
+					<th>T#</th>
+					<th>Item</th>
+					<th>Custom</th>
+					<th class="text-right">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="i in mysession.kview">
+					<td>{{$index + 1}}</td>
+					<td>{{i.o_id}}</td>
+					<td>{{i.start_time}}</td>
+					<td>{{i.w_name}}</td>
+					<td>{{i.t_name}}</td>
+					<td>{{i.name}}</td>
+					<td>{{i.custom}}</td>
+					<td class="text-right">
+						<button type="button" class="btn btn-primary btn" tooltip="The menu item is ready" tooltip-placement="right" ng-click="omiReady(i.id)">
+							<i class="fa fa-external-link"></i> Ready
+						</button>
+					</td>
+				</tr>
+				<tr ng-show="mysession.kview == null || mysession.kview.length == 0">
+					<td colspan="8" class="text-center">
+						<h4>No active orders</h4>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

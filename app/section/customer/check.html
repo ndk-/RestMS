@@ -1,0 +1,62 @@
+<div class="modal-header">
+	<button type="button" class="close" aria-hidden="true" ng-click="cancel()">
+		&times;
+	</button>
+	<h4 class="modal-title">Thank you for the payment!</h4>
+</div>
+<div class="modal-body">
+	<div class="padding10 panel col-lg-12 col-md-12 col-sm-12 color2bord">
+		<form role="form" class="form-inline">
+			<div class="panel-heading">
+				Your Check:
+			</div>
+			<div class="panel-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="i in t_items">
+							<td>{{$index + 1}}</td>
+							<td>{{i.name}}</td>
+							<td>${{i.price}}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th colspan="2">Tips {{tips}}%:</th>
+							<th>${{ltTotal}}</th>
+						</tr>
+						<tr>
+							<th colspan="2">Sales Tax {{tax}}%:</th>
+							<th>${{lsTax}}</th>
+						</tr>
+						<tr ng-show="couponTotal">
+							<th colspan="2">Coupon {{coupon}}:</th>
+							<th>${{lcTotal}}</th>
+						</tr>
+						<tr>
+							<th colspan="2">Total:</th>
+							<th>${{loTotal}}</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary btn-lg" ng-click="mysession.section = 'menu'; cancel()">
+		<i class="fa fa-cutlery"></i> Return to Menu
+	</button>
+	<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()" ng-class="{disabled: mysession.order.o_state}">
+		<i class="fa fa-dollar"></i> Continue Paying
+	</button>
+	<button type="button" class="btn btn-primary btn-lg" ng-class="{disabled: !mysession.order.o_state}" ng-click="cancel(); cLogout()">
+		<i class="fa fa-sign-out"></i> Finish Dining
+	</button>
+</div>

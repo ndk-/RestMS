@@ -1,0 +1,161 @@
+<div ng-controller="mStatCtrl">
+	<div class="menu panel color2 color2bord col-lg-12 col-md-12">
+		<div class="panel-heading">
+			Statistics
+		</div>
+		<tabset>
+			<tab>
+				<tab-heading>
+					<i class="fa fa-suitcase"></i> Summary
+				</tab-heading>
+				<div class="jumbotron clearfix">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th colspan="2">Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Number of Orders:</td>
+								<td>{{mysession.orders.length}}</td>
+							</tr>
+							<tr>
+								<td>Sales Before Tips:</td>
+								<td>${{mysession.orders.beforetips.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Tips:</td>
+								<td>${{mysession.orders.tips.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Total Sales:</td>
+								<td>${{mysession.orders.paid.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Served:</td>
+								<td>{{mysession.ordereditems.length}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Comped:</td>
+								<td>{{mysession.ordereditems.comped}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Paid:</td>
+								<td>{{mysession.ordereditems.paid}}</td>
+							</tr>
+							<tr>
+								<td>Number of Registered Customers:</td>
+								<td>{{mysession.customer.length-1}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<br />
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Top 5 Selling Items</th>
+								<th>Items Served</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="oi in mysession.ordereditems.mp | limitTo: 5">
+								<td>{{oi.name}}</td>
+								<td>{{oi.counter}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab ng-repeat="w in mysession.waiters">
+				<tab-heading>
+					<i class="fa fa-user"></i> {{w.username}}
+				</tab-heading>
+				<div class="jumbotron clearfix">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th colspan="2">Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Number of Orders:</td>
+								<td>{{w.orders.length}}</td>
+							</tr>
+							<tr>
+								<td>Sales Before Tips:</td>
+								<td>${{w.orders.beforetips.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Tips:</td>
+								<td>${{w.orders.tips.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Total Sales:</td>
+								<td>${{w.orders.paid.toFixed(2)}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Served:</td>
+								<td>{{w.ordereditems.length}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Comped:</td>
+								<td>{{w.ordereditems.comped}}</td>
+							</tr>
+							<tr>
+								<td>Number of Items Paid:</td>
+								<td>{{w.ordereditems.paid}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<br />
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Top 5 Selling Items</th>
+								<th>Items Served</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="oi in w.ordereditems.mp | limitTo: 5">
+								<td>{{oi.name}}</td>
+								<td>{{oi.counter}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab>
+				<tab-heading>
+					<i class="fa fa-users"></i> Customers
+				</tab-heading>
+				<div class="jumbotron clearfix">
+					<alert ng-repeat="a in mysession.alerts" type="a.type" close="alertClose($index)">
+						{{a.msg}}
+					</alert>
+					<button class="btn btn-lg btn-primary" ng-click="clearChat()">
+						<i class="fa fa-trash-o"></i> Clear Chat
+					</button>
+					<br />
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Last Visit</th>
+							</tr>
+						<tbody>
+							<tr ng-repeat="c in mysession.customer | filter:'!Guest'">
+								<td>{{c.name}}</td>
+								<td>{{c.email}}</td>
+								<td>{{c.last_time}}</td>
+							</tr>
+						</tbody>
+						</thead>
+					</table>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+</div>

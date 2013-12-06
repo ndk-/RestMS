@@ -1,15 +1,24 @@
-<div class="menu panel color2 color2bord" ng-controller="cMenuCtrl" ng-class="{'col-lg-8 col-md-8': credentials.cart.showCart}">
+<div class="menu panel color2 color2bord" ng-controller="cMenuCtrl" ng-class="{'col-lg-8 col-md-8': mysession.cart.showCart}">
 	<ol class="breadcrumb color3">
 		Categories:
+		<li ng-class='{active: mc.idx==-1}'>
+			<a ng-click="mc.idx=-1" class="fav">Our Picks</a>
+		</li>
 		<li ng-repeat="c in menucategory" ng-class='{active: mc.idx==$index}'>
 			<a ng-click="mc.idx=$index">{{c.name}}</a>
 		</li>
 	</ol>
-	<alert ng-repeat="a in credentials.alerts" type="a.type" close="alertClose($index)">
+	<alert ng-repeat="a in mysession.alerts" type="a.type" close="alertClose($index)">
 		{{a.msg}}
 	</alert>
+	<div ng-show="mc.id == 6" class="alert alert-success">
+		All our combo meals include $1 OFF!
+	</div>
+	<div ng-show="mc.id == 7" class="alert alert-success">
+		Kids' meals are FREE with order of entree. <b>Note:</b> You must have entree in the cart before ordering free kids meal.
+	</div>
 	<div class="text-center">
-		<div class="thumbwrap" ng-repeat="i in menuitem" ng-show="mc.id == i.mc_id" ng-class="{disabled: i.state}">
+		<div class="thumbwrap" ng-repeat="i in menuitem" ng-show="i.fav && mc.idx == -1 || mc.id == i.mc_id" ng-class="{disabled: i.state}">
 			<a ng-click="customizeItem(i.id)" class="thumbnail"> <img ng-src="img/{{i.picture}}" alt="image"></a>
 			<div class="ttitle">
 				{{i.name}}
@@ -20,14 +29,14 @@
 			<div class="icons">
 				<i class="fa fa-heart" ng-show="(i.calories < mc.heartyidx)"></i>
 				<i class="fa fa-fire" ng-show="i.spicy"></i>
-				<i class="fa fa-leaf" ng-show="i.vegetarian"></i>
-				<i class="fa fa-lemon-o" ng-show="i.gfree"></i>
+				<i class="fa fa-pagelines" ng-show="i.vegetarian"></i>
+				<i class="fa fa-leaf" ng-show="i.gfree"></i>
 			</div>
 			<div class="btn-group-vertical cbtn">
-				<button type="button" class="btn" tooltip="Read Description and Customize" tooltip-placement="right" ng-click="customizeItem(i.id)">
+				<button type="button" class="btn btn-primary" tooltip="Read Description and Customize" tooltip-placement="right" ng-click="customizeItem(i.id)">
 					<i class="fa fa-fw fa-info"></i>
 				</button>
-				<button type="button" class="btn" tooltip="Simply Add to Your Cart" tooltip-placement="right" ng-click="addItem(i.id)">
+				<button type="button" class="btn btn-primary" tooltip="Simply Add to Your Cart" tooltip-placement="right" ng-click="addItem(i.id)">
 					<i class="fa fa-fw fa-plus"></i>
 				</button>
 			</div>
@@ -35,6 +44,6 @@
 	</div>
 	<div class="icons-lined">
 		<span class="label label-success">Information:</span>
-		<i class="fa fa-heart"></i> Hearty <i class="fa fa-fire"></i> Spicy <i class="fa fa-leaf"></i> Vegetarian <i class="fa fa-lemon-o"></i> Gluten Free
+		<i class="fa fa-heart"></i> Hearty <i class="fa fa-fire"></i> Spicy <i class="fa fa-pagelines"></i> Vegetarian <i class="fa fa-leaf"></i> Gluten Free
 	</div>
 </div>

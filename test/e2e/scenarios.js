@@ -9,21 +9,21 @@ describe('my app', function() {
   });
 
 
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    expect(browser().location().url()).toBe("/view1");
+  it('should automatically redirect to /login when location hash/fragment is empty', function() {
+    expect(browser().location().url()).toBe("/login");
   });
 
 
-  describe('view1', function() {
+  describe('login', function() {
 
     beforeEach(function() {
-      browser().navigateTo('#/view1');
+      browser().navigateTo('#/login');
     });
 
 
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 1/);
+    it('should render /login when user navigates to /login', function() {
+      expect(element('[ng-view] div:first').text()).
+        toMatch(/Please sign-up/);
     });
 
   });

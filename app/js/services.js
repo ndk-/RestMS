@@ -4,34 +4,45 @@
 
 
 angular.module('myApp.services', ['ngResource'])
+
+//------------------------------------------------------------------------------------------
+// Global Storage    
+//------------------------------------------------------------------------------------------
+    .factory('SessionStorage', [ function () {
+    	var session = new Object();
+
+// destroy data in the storage
+    	session.destroy = function() {
+    		for (var i in session)
+    			if (i != 'destroy' && i != 'clearAll')
+    				delete session[i];
+    	}
+
+// clear all setIntervals
+    	session.clearAll = function() {
+			for (var i = 1; i < 99999; i++)
+        		window.clearInterval(i);
+    	}
+
+    	return session;
+    }])
+
+//------------------------------------------------------------------------------------------
 // Menu category service
+//------------------------------------------------------------------------------------------
     .factory('MenuCategory', [ '$resource', function ($resource) {
-	return $resource('db.php/menucategory/:id', {}, {
-	    query: {
-		method: 'GET',
-		params: { id: '' },
-		isArray: true
-	    }
-	})
+		return $resource('db.php/menucategory/:id', {}, {
+	    	query: {
+				method: 'GET',
+				params: { id: '' },
+				isArray: true
+	    	}
+		})
     }])
-// Storing user data    
-    .factory('Credentials', [ '$http', '$resource', function ($http, $resource) {
-    	var credentials = new Object();
-    	return credentials;
-    }])
-    .factory('Order',[ '$http', '$resource',function ($http, $resource){
-    	var order = new Object();
-    	return order;
-    }])
-    .factory('Cart',[ '$http', '$resource',function ($http, $resource){
-    	var cart = new Object();
-    	return cart;
-    }])
-    .factory('Table',[ '$http', '$resource',function ($http, $resource){
-    	var table = new Object();
-    	return table;
-    }])
+
+//------------------------------------------------------------------------------------------
 // Menu items service    
+//------------------------------------------------------------------------------------------
     .factory('MenuItem', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/menuitem/:cmd/:id', {}, {
 	    	get: {
@@ -41,10 +52,11 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-		    			data.spicy = (data.spicy == true) ? "1" : "0";
-		    			data.gfree = (data.gfree == true) ? "1" : "0";
-		    			data.state = (data.state == true) ? "1" : "0";
-		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
+		    			data.spicy = Boolean(Number(data.spicy));
+		    			data.gfree = Boolean(Number(data.gfree));
+		    			data.vegetarian = Boolean(Number(data.vegetarian));
+		    			data.state = Boolean(Number(data.state));
+		    			data.fav = Boolean(Number(data.fav));
 		    			return data;
 		    		}
 		    	])
@@ -58,16 +70,17 @@ angular.module('myApp.services', ['ngResource'])
 	    	query: {
 				method: 'GET',
 				params: {
-		    		id: '@id' 
+		    		id: '' 
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
-		    				data[i].spicy = (parseInt(data[i].spicy) == 1) ? true : false;
-		    				data[i].gfree = (parseInt(data[i].gfree) == 1) ? true : false;
-		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
-		    				data[i].vegetarian = (parseInt(data[i].vegetarian) == 1) ? true : false;
+		    				data[i].spicy = Boolean(Number(data[i].spicy));
+		    				data[i].gfree = Boolean(Number(data[i].gfree));
+		    				data[i].vegetarian = Boolean(Number(data[i].vegetarian));
+		    				data[i].state = Boolean(Number(data[i].state));
+		    				data[i].fav = Boolean(Number(data[i].fav));
 		    			}
 		    			return data;
 		    		}
@@ -84,10 +97,11 @@ angular.module('myApp.services', ['ngResource'])
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
-		    				data[i].spicy = (parseInt(data[i].spicy) == 1) ? true : false;
-		    				data[i].gfree = (parseInt(data[i].gfree) == 1) ? true : false;
-		    				data[i].state = (parseInt(data[i].state) == 1) ? true : false;
-		    				data[i].vegetarian = (parseInt(data[i].vegetarian) == 1) ? true : false;
+		    				data[i].spicy = Boolean(Number(data[i].spicy));
+		    				data[i].gfree = Boolean(Number(data[i].gfree));
+		    				data[i].vegetarian = Boolean(Number(data[i].vegetarian));
+		    				data[i].state = Boolean(Number(data[i].state));
+		    				data[i].fav = Boolean(Number(data[i].fav));
 		    			}
 		    			return data;
 		    		}
@@ -101,10 +115,16 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-		    			data.spicy = (data.spicy == true) ? "1" : "0";
-		    			data.gfree = (data.gfree == true) ? "1" : "0";
-		    			data.state = (data.state == true) ? "1" : "0";
-		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
+		    			if (data.spicy != null)
+		    				data.spicy = Number(data.spicy);
+		    			if (data.vegetarian != null)
+			    			data.vegetarian = Number(data.vegetarian);
+		    			if (data.gfree != null)
+			    			data.gfree = Number(data.gfree);
+		    			if (data.state != null)
+			    			data.state = Number(data.state);
+		    			if (data.fav != null)
+			    			data.fav = Number(data.fav);
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest)
@@ -116,10 +136,11 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-		    			data.spicy = (data.spicy == true) ? "1" : "0";
-		    			data.gfree = (data.gfree == true) ? "1" : "0";
-		    			data.state = (data.state == true) ? "1" : "0";
-		    			data.vegetarian = (data.vegetarian == true) ? "1" : "0";
+						data.spicy = Number(data.spicy);
+						data.vegetarian = Number(data.vegetarian);
+						data.gfree = Number(data.gfree);
+						data.state = Number(data.state);
+						data.fav = Number(data.fav);
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			return newdata;
@@ -128,7 +149,10 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+
+//------------------------------------------------------------------------------------------
 // Coupon service
+//------------------------------------------------------------------------------------------
     .factory('Coupon', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/coupon/:cmd/:id', {}, {
 	    	get: {
@@ -139,9 +163,28 @@ angular.module('myApp.services', ['ngResource'])
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
 						data.cvalue = parseFloat(data.cvalue);
-						data.pts = parseInt(data.pts);
-	    				data.state = (parseInt(data.state));
+						data.pts = Number(data.pts);
+	    				data.state = Number(data.state);
 						data.fstate = false;
+		    			return data;
+		    		}
+		    	])
+	    	},
+	    	getByName: {
+				method: 'GET',
+				params: {
+					cmd: 'name',
+		    		id: '@id'
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headersGetter) {
+		    			if (data[0] != null && data[0].id != null) {
+			    			data = data[0];
+							data.cvalue = parseFloat(data.cvalue);
+							data.pts = Number(data.pts);
+	    					data.state = Number(data.state);
+							data.fstate = false;
+						}
 		    			return data;
 		    		}
 		    	])
@@ -155,16 +198,16 @@ angular.module('myApp.services', ['ngResource'])
 	    	query: {
 				method: 'GET',
 				params: {
-		    		id: '@id' 
+		    		id: '' 
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
 							data[i].cvalue = parseFloat(data[i].cvalue);
-							data[i].pts = parseInt(data[i].pts);
+							data[i].pts = Number(data[i].pts);
 							data[i].fstate = false;
-		    				data[i].state = (parseInt(data[i].state));
+		    				data[i].state = Number(data[i].state);
 		    			}
 		    			return data;
 		    		}
@@ -182,9 +225,9 @@ angular.module('myApp.services', ['ngResource'])
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
 							data[i].cvalue = parseFloat(data[i].cvalue);
-							data[i].pts = parseInt(data[i].pts);
+							data[i].pts = Number(data[i].pts);
 							data[i].fstate = false;
-		    				data[i].state = (parseInt(data[i].state));
+		    				data[i].state = Number(data[i].state);
 		    			}
 		    			return data;
 		    		}
@@ -219,64 +262,48 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+
+//------------------------------------------------------------------------------------------
 // Account service    
+//------------------------------------------------------------------------------------------
     .factory('Account', [ '$http', '$resource', function ($http, $resource) {
-		return $resource('db.php/access/:id', {}, {
+		return $resource('db.php/access/:cmd/:id', {}, {
 	    	get: {
 				method: 'GET',
 				params: {
+					cmd: '',
 		    		id: '@id'
 		    	},
-		    	transformResponse: $http.defaults.transformResponse.concat([
-		    		function (data, headersGetter) {
-		    			return data;
-		    		}
-		    	])
-	    	},
-	    	remove: {
-				method: 'DELETE',
-				params: {
-		    		id: '@id'
-		    	}
 	    	},
 	    	query: {
 				method: 'GET',
 				params: {
-		    		id: '@id' 
+					cmd: '',
+		    		id: '' 
 		    	},
-/*		    	transformResponse: $http.defaults.transformResponse.concat([
-		    		function (data, headersGetter) {
-		    			return data;
-		    		}
-		    	]), */
+				isArray: true
+	    	},
+	    	wQuery: {
+				method: 'GET',
+				params: {
+					cmd: 'a_lvl',
+		    		id: '2' 
+		    	},
 				isArray: true
 	    	},
 	    	save: {
 	    		method: 'PUT',
 	    		params: {
+	    			cmd: '',
 	    			id:	'@id'
 	    		},
-/*		    	transformRequest: [
-		    		function (data, headersSetter) {
-		    			return data;
-		    		}
-		    	].concat($http.defaults.transformRequest) */
 	    	},
-	    	create: {
-	    		method: 'POST',
-	    		params: {
-	    			id:	''
-	    		},
-/*		    	transformRequest: [
-		    		function (data, headersSetter) {
-		    			var newdata = new Array();
-		    			newdata[0] = data;
-		    			return newdata;
-		    		}
-		    	].concat($http.defaults.transformRequest)*/
-	    	}
 		})
     }])
+
+//------------------------------------------------------------------------------------------
+// Customer
+//------------------------------------------------------------------------------------------
     .factory('Customer', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/customer/:cmd/:id', {}, {
 	    	get: {
@@ -285,11 +312,6 @@ angular.module('myApp.services', ['ngResource'])
 					cmd: '',
 		    		id: '@id'
 		    	},
-/*		    	transformResponse: $http.defaults.transformResponse.concat([
-		    		function (data, headersGetter) {
-		    			return data;
-		    		}
-		    	]), */
 	    	},
 	    	getByEmail: {
 				method: 'GET',
@@ -300,10 +322,18 @@ angular.module('myApp.services', ['ngResource'])
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
 		    			if (data[0] != null)
-							data[0].pts = parseInt(data[0].pts);
+							data[0].pts = Number(data[0].pts);
 		    			return data[0];
 		    		}
 		    	]),
+	    	},
+	    	query: {
+				method: 'GET',
+				params: {
+					cmd: '',
+		    		id: '' 
+		    	},
+				isArray: true
 	    	},
 	    	remove: {
 				method: 'DELETE',
@@ -316,11 +346,6 @@ angular.module('myApp.services', ['ngResource'])
 	    		params: {
 	    			id:	'@id'
 	    		},
-/*		    	transformRequest: [
-		    		function (data, headersSetter) {
-		    			return data;
-		    		}
-		    	].concat($http.defaults.transformRequest)*/
 	    	},
 	    	create: {
 	    		method: 'POST',
@@ -337,6 +362,10 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+
+//------------------------------------------------------------------------------------------
+// Table
+//------------------------------------------------------------------------------------------
     .factory('TableStatus', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/waiterxtable/:cmd/:id', {}, {
 	    	get: {
@@ -359,8 +388,8 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-						data[0].cw_state = ((data[0].cw_state == "1") ? true : false);
-						data[0].t_state = ((data[0].t_state == "1") ? true : false); // free/occupied ?
+						data[0].cw_state = Boolean(Number(data[0].cw_state));
+						data[0].t_state = Number(data[0].t_state); // free/occupied/must be cleaned
 		    			return data[0];
 		    		}
 		    	]),
@@ -373,8 +402,8 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-						data[0].cw_state = ((data[0].cw_state == "1") ? true : false);
-						data[0].t_state = ((data[0].t_state == "1") ? true : false); // free/occupied ?
+						data[0].cw_state = Boolean(Number(data[0].cw_state));
+						data[0].t_state = Number(data[0].t_state); // free/occupied/must be cleaned
 		    			return data[0];
 		    		}
 		    	]),
@@ -387,14 +416,20 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-						data.cw_state = ((data.cw_state == true) ? "1" : "0");
-						data.t_state = ((data.t_state == true) ? "1" : "0"); // free/occupied ?
+		    			if (data.cw_state != null)
+							data.cw_state = Number(data.cw_state);
+						if (data.t_state != null)
+							data.t_state = Number(data.t_state); // free/occupied/must be cleaned
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest)
 	    	},
 		})
     }])
+
+//------------------------------------------------------------------------------------------
+// Order
+//------------------------------------------------------------------------------------------
     .factory('Order', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/orders/:cmd/:id', {}, {
 	    	get: {
@@ -407,8 +442,8 @@ angular.module('myApp.services', ['ngResource'])
 						data.tips = parseFloat(data.tips);
 						data.paid = parseFloat(data.paid);
 						data.total = parseFloat(data.total);
-		    			data.o_state = (data.o_state == "1") ? true : false;
-		    			data.r_state = (data.r_state == "1") ? true : false;
+		    			data.o_state = Boolean(Number(data.o_state));
+		    			data.r_state = Boolean(Number(data.r_state));
 		    			return data;
 		    		}
 		    	])
@@ -431,8 +466,8 @@ angular.module('myApp.services', ['ngResource'])
 							data[i].tips = parseFloat(data[i].tips);
 							data[i].paid = parseFloat(data[i].paid);
 							data[i].total = parseFloat(data[i].total);
-		    				data[i].o_state = (data[i].o_state == "1") ? true : false;
-		    				data[i].r_state = (data[i].r_state == "1") ? true : false;
+		    				data[i].o_state = Boolean(Number(data[i].o_state));
+		    				data[i].r_state = Boolean(Number(data[i].r_state));
 		    			}
 		    			return data;
 		    		}
@@ -446,9 +481,12 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-	    				data.o_state = (data.o_state == true) ? "1" : "0";
-	    				data.r_state = (data.r_state == true) ? "1" : "0";
+		    			console.log("services.order.save: ", data);
 	    				delete data.start_time;
+		    			if (data.o_state != null)
+	    					data.o_state = Number(data.o_state);
+	    				if (data.r_state != null)
+	    					data.r_state = Number(data.r_state);
 	    				if (data.end_time == null)
 	    					delete data.end_time;
 	    				if (data.cp_id == null)
@@ -464,8 +502,8 @@ angular.module('myApp.services', ['ngResource'])
 	    		},
 		    	transformRequest: [
 		    		function (data, headersSetter) {
-	    				data.o_state = (data.o_state == true) ? "1" : "0";
-	    				data.r_state = (data.r_state == true) ? "1" : "0";
+	    				data.o_state = Number(data.o_state);
+	    				data.r_state = Number(data.r_state);
 		    			var newdata = new Array();
 		    			newdata[0] = data;
 		    			return newdata;
@@ -474,6 +512,10 @@ angular.module('myApp.services', ['ngResource'])
 	    	}
 		})
     }])
+
+//------------------------------------------------------------------------------------------
+// Ordered Menu Item
+//------------------------------------------------------------------------------------------
     .factory('oMenuItem', [ '$http', '$resource', function ($http, $resource) {
 		return $resource('db.php/ordereditem/:cmd/:id', {}, {
 	    	get: {
@@ -483,7 +525,7 @@ angular.module('myApp.services', ['ngResource'])
 		    	},
 		    	transformResponse: $http.defaults.transformResponse.concat([
 		    		function (data, headersGetter) {
-						data.state = parseInt(data.state);
+						data.state = Number(data.state);
 		    			return data;
 		    		}
 		    	])
@@ -503,7 +545,7 @@ angular.module('myApp.services', ['ngResource'])
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
-							data[i].state = parseInt(data[i].state);
+							data[i].state = Number(data[i].state);
 		    			}
 		    			return data;
 		    		}
@@ -520,7 +562,7 @@ angular.module('myApp.services', ['ngResource'])
 		    		function (data, headersGetter) {
 		    			var len = data.length;
 		    			for (var i=0;i<len;i++) {
-							data[i].state = parseInt(data[i].state);
+							data[i].state = Number(data[i].state);
 		    			}
 		    			return data;
 		    		}
@@ -537,6 +579,28 @@ angular.module('myApp.services', ['ngResource'])
 		    			return data;
 		    		}
 		    	].concat($http.defaults.transformRequest) */
+	    	},
+	    	mSave: {
+	    		method: 'PUT',
+	    		params: {
+	    			id:	''
+	    		},
+		    	transformRequest: [
+		    		function (data, headersSetter) {
+						if (Array.isArray(data))
+							return data;
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			return newdata;
+		    		}
+		    	].concat($http.defaults.transformRequest),
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+		    			var newdata = new Array();
+		    			newdata[0] = data;
+		    			return newdata;
+		    	}]),
+    			isArray: true
 	    	},
 	    	mCreate: {
 	    		method: 'POST',
@@ -559,6 +623,145 @@ angular.module('myApp.services', ['ngResource'])
 		    			return newdata;
 		    	}]),
     			isArray: true
+	    	}
+		})
+    }])
+//------------------------------------------------------------------------------------------
+// Kitchen view (sql view)
+//------------------------------------------------------------------------------------------
+    .factory('KitchenView', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/k_view/', {}, {
+	    	query: {
+				method: 'GET',
+				isArray: true,
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+						var ndata = new Array();
+						ndata[0] = data;
+		    			return ndata;
+		    	}]),
+	    	}
+		})
+    }])
+
+//------------------------------------------------------------------------------------------
+// Waiter tables and active orders view (sql view)
+//------------------------------------------------------------------------------------------
+    .factory('WaiterTableView', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/wt_view/w_id/:id', {}, {
+	    	query: {
+				method: 'GET',
+	    		params: {
+	    			id:	'@id'
+	    		},
+				isArray: true,
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+						var ndata = new Array();
+						ndata[0] = data;
+		    			return ndata;
+		    	}]),
+	    	}
+		})
+    }])
+
+//------------------------------------------------------------------------------------------
+// Waiter ordered menu items of active orders view (sql view)
+//------------------------------------------------------------------------------------------
+    .factory('WaiterOMIView', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/oimi/:cmd/:id', {}, {
+	    	query: {
+				method: 'GET',
+	    		params: {
+	    			id:	'@id'
+	    		},
+				isArray: true,
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+						var ndata = new Array();
+						ndata[0] = data;
+		    			return ndata;
+		    	}]),
+	    	},
+	    	cQuery: {
+				method: 'GET',
+	    		params: {
+	    			cmd: 'o_id',
+	    			id:	'@id'
+	    		},
+				isArray: true,
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+						var ndata = new Array();
+						ndata[0] = data;
+		    			return ndata;
+		    	}]),
+	    	}
+		})
+    }])
+
+//------------------------------------------------------------------------------------------
+// Manager orders x waiter x table view (sql view)
+//------------------------------------------------------------------------------------------
+    .factory('ManagerOxWxT', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/oxwt/:cmd/:id', {}, {
+	    	query: {
+				method: 'GET',
+	    		params: {
+	    			cmd: '',
+	    			id:	'@id'
+	    		},
+				isArray: true,
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+						var ndata = new Array();
+						ndata[0] = data;
+		    			return ndata;
+		    	}]),
+	    	}
+		})
+    }])
+
+//------------------------------------------------------------------------------------------
+// Chat
+//------------------------------------------------------------------------------------------
+    .factory('Chat', [ '$http', '$resource', function ($http, $resource) {
+		return $resource('db.php/chat/:cmd/:id', {}, {
+	    	query: {
+				method: 'GET',
+				params: {
+					cmd: '',
+		    		id: '' 
+		    	},
+		    	transformResponse: $http.defaults.transformResponse.concat([
+		    		function (data, headerGetter) {
+						if (Array.isArray(data))
+							return data;
+		    			return [data];
+		    	}]),
+				isArray: true
+	    	},
+	    	create: {
+	    		method: 'POST',
+	    		params: {
+	    			id:	''
+	    		},
+	    	},
+	    	remove: {
+				method: 'DELETE',
+				params: {
+		    		id: '@id'
+		    	}
 	    	}
 		})
     }])

@@ -10,6 +10,8 @@ module.exports = function(config){
       'test/unit/**/*.js'
     ],
 
+    exclude: ['app/lib/angular/angular-scenario.js'],
+
     autoWatch : true,
 
     frameworks: ['jasmine'],
@@ -20,7 +22,7 @@ module.exports = function(config){
             'karma-junit-reporter',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-jasmine'       
+            'karma-jasmine'
             ],
 
     junitReporter : {

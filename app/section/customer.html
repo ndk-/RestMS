@@ -5,37 +5,37 @@
 				<span class="navbar-brand"><i class="fa fa-cutlery"></i></span>
 			</div>
 			<div class="btn-group pull-right btn-navbar">
-				<button type="button" class="btn btn-primary" btn-checkbox ng-model="credentials.table.cw_state" ng-class="{'btn-info': credentials.table.cw_state}" ng-click="callWaiter()">
+				<button type="button" class="btn btn-primary" btn-checkbox ng-model="mysession.table.cw_state" ng-class="{'btn-info': mysession.table.cw_state}" ng-click="callWaiter()">
 					<i class="fa fa-phone"></i> Call a Waiter
 				</button>
-				<button type="button" class="btn btn-primary" ng-class="{'btn-info active': credentials.order.r_state}" ng-click="requestRefill()">
+				<button type="button" class="btn btn-primary" ng-class="{'btn-info active': mysession.order.r_state, disabled: !mysession.can_refill}" ng-click="requestRefill()">
 					<i class="fa fa-beer"></i> Request a Refill
 				</button>
-				<button type="button" class="btn btn-primary">
+				<button type="button" class="btn btn-primary" ng-class="{disabled: (!mysession.order.o_state && mysession.order.id)}" ng-click="cLogout()">
 					<i class="fa fa-sign-out"></i> Finish Dining
 				</button>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li ng-class="{'active': section == 'menu'}">
-						<a ng-click="section = 'menu'">Our Menu</a>
+					<li ng-class="{'active': mysession.section == 'menu'}">
+						<a ng-click="mysession.section = 'menu'">Our Menu</a>
 					</li>
-					<li ng-class="{'active': section == 'game'}">
-						<a ng-click="section = 'game'">Play A Game</a>
+<!--					<li ng-class="{'active': mysession.section == 'game'}">
+						<a ng-click="mysession.section = 'game'">Play A Game</a>
+					</li> -->
+					<li ng-class="{'active': mysession.section == 'chat'}">
+						<a ng-click="startChat()">Greet A Friend</a>
 					</li>
-					<li ng-class="{'active': section == 'chat'}">
-						<a ng-click="section = 'chat'">Greet A Friend</a>
+					<li ng-class="{'active': mysession.cart.showCart, disabled: mysession.section == 'bill'}">
+						<a ng-click="mysession.section == 'bill' || (mysession.cart.showCart = !mysession.cart.showCart)">View My Cart&nbsp;&nbsp;<span class="label label-info">{{mysession.cart.items.length}}</span></a>
 					</li>
-					<li ng-class="{'active': credentials.cart.showCart}">
-						<a ng-click="credentials.cart.showCart = !credentials.cart.showCart">View My Cart&nbsp;&nbsp;<span class="label label-info">{{credentials.cart.items.length}}</span></a>
-					</li>
-					<li ng-class="{'active': section == 'bill'}">
-						<a ng-click="section = 'bill'">Pay The Bill</a>
+					<li ng-class="{'active': mysession.section == 'bill', disabled: mysession.order.id == null}" >
+						<a ng-click="mysession.order.id == null || (mysession.section = 'bill')">Pay The Bill</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<ng-include src="'section/customer/'+section+'.html'"></ng-include>
+	<ng-include src="'section/customer/'+mysession.section+'.html'"></ng-include>
 	<ng-include src="'section/customer/cart.html'"></ng-include>
 </div>
