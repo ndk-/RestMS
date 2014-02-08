@@ -22,8 +22,8 @@ mySQL <br />
 Web Server <br />
 
 
-Unit Testing
-------------
+Requirements for Unit Testing
+-----------------------------
 node.js <br />
 karma <br />
 
@@ -47,7 +47,7 @@ Execute RestMS/scripts/test.sh
 Structure of the application
 ----------------------------
 
-Unit tests: <br />
+Unit tests (few examples): <br />
 &nbsp;&nbsp;&nbsp;RestMS/test/unit <br />
 
 Application directory: <br />
